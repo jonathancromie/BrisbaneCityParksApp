@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Brisbane City Parks</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_park">ParkActivity</string>
+    <string-array name="drawer-array">
+        <item>Login</item>
+        <item>Register</item>
+        <item>Search</item>
+    </string-array>
+</resources>
