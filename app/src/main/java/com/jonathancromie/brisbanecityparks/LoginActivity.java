@@ -99,6 +99,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.login:
                 new AttemptLogin().execute();
+
                 break;
             case R.id.register:
                 Intent i = new Intent(this, RegisterActivity.class);
@@ -149,9 +150,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                     Log.d("Login Successful!", json.toString());
-//                    Intent i = new Intent(LoginActivity.this, ReadComments.class);
-//                    finish();
-//                    startActivity(i);
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    finish();
+                    startActivity(i);
                     return json.getString(TAG_MESSAGE);
                 }else{
                     Log.d("Login Failure!", json.getString(TAG_MESSAGE));
