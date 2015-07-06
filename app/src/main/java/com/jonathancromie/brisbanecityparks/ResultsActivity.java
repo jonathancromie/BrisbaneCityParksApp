@@ -1,16 +1,25 @@
 package com.jonathancromie.brisbanecityparks;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,9 +27,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ResultsActivity extends Activity {
+
+    RecyclerView mRecyclerView;
+    ParkAdapter mAdapter;
+    LayoutManager mLayoutManager;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -55,25 +69,38 @@ public class ResultsActivity extends Activity {
     //An array of all of our comments
     private JSONArray mResults = null;
     //manages all of our comments in a list.
-    private ArrayList<HashMap<String, String>> mResultList;
+//    private ArrayList<HashMap<String, String>> mResultList;
+    private ArrayList<ParkInfo> mResultList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
+        mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+//
+//        mAdapter = new ParkAdapter(mResultList);
+//        mRecyclerView.setAdapter(mAdapter);
+
+//        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+//        mAdapter = new ParkAdapter(mResultList);
+//        recList.setHasFixedSize(true);
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        recList.setLayoutManager(llm);
+
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onResume() {
         super.onResume();
         //loading the results via AsyncTask
-        new LoadResults().execute();
+        new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 //    public void addComment(View v)
@@ -91,7 +118,8 @@ public class ResultsActivity extends Activity {
         // to the json element name, and the content, for example,
         // message it the tag, and "I'm awesome" as the content..
 
-        mResultList = new ArrayList<HashMap<String, String>>();
+//        mResultList = new ArrayList<HashMap<String, String>>();
+        mResultList = new ArrayList<ParkInfo>();
 
         //Retrieving search query
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ResultsActivity.this);
@@ -131,7 +159,7 @@ public class ResultsActivity extends Activity {
                 map.put(TAG_SUBURB, suburb);
 
                 // adding HashList to ArrayList
-                mResultList.add(map);
+                mResultList.add(new ParkInfo(name, street, suburb));
 
                 //annndddd, our JSON data is up to date same with our array list
             }
@@ -146,37 +174,25 @@ public class ResultsActivity extends Activity {
      */
     private void updateList() {
 
-        // For a ListActivity we need to set the List Adapter, and in order to do
-        //that, we need to create a ListAdapter.  This SimpleAdapter,
-        //will utilize our updated Hashmapped ArrayList,
-        //use our single_post xml template for each item in our list,
-        //and place the appropriate info from the list to the
-        //correct GUI id.  Order is important here.
+//        For a ListActivity we need to set the List Adapter, and in order to do
+//        that, we need to create a ListAdapter.  This SimpleAdapter,
+//        will utilize our updated Hashmapped ArrayList,
+//        use our single_post xml template for each item in our list,
+//        and place the appropriate info from the list to the
+//        correct GUI id.  Order is important here.
 
-//        ListAdapter adapter = new SimpleAdapter(this, mCommentList,
-//                R.layout.single_post, new String[] { TAG_TITLE, TAG_MESSAGE,
-//                TAG_USERNAME }, new int[] { R.id.title, R.id.message,
-//                R.id.username });
+//        ParkAdapter mAdapter = new ParkAdapter(mResultList);
+////        recList.setAdapter(mAdapter);
+//        setListAdapter((ListAdapter) mAdapter);
+
+//        mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+//        mRecyclerView.setHasFixedSize(true);
 //
-//        // I shouldn't have to comment on this one:
-//        setListAdapter(adapter);
-//
-//        // Optional: when the user clicks a list item we
-//        //could do something.  However, we will choose
-//        //to do nothing...
-//        ListView lv = getListView();
-//        lv.setOnItemClickListener(new OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//
-//                // This method is triggered if an item is click within our
-//                // list. For our example we won't be using this, but
-//                // it is useful to know in real life applications.
-//
-//            }
-//        });
+//        mLayoutManager = new LinearLayoutManager(this);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new ParkAdapter(mResultList);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
