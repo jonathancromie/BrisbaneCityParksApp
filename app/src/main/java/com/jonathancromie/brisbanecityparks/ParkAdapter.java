@@ -1,5 +1,6 @@
 package com.jonathancromie.brisbanecityparks;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +19,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ParkViewHolder extends RecyclerView.ViewHolder {
+    public static class ParkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cardView;
         TextView parkName;
@@ -31,6 +32,14 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             parkName = (TextView) itemView.findViewById(R.id.txtName);
             parkStreet = (TextView) itemView.findViewById(R.id.txtStreet);
             parkSuburb = (TextView) itemView.findViewById(R.id.txtSuburb);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent(view.getContext(), AddReview.class);
+            view.getContext().startActivity(i);
         }
     }
 
