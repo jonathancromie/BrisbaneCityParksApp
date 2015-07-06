@@ -26,7 +26,7 @@ import java.util.List;
 
 public class AddReview extends Activity implements View.OnClickListener {
 
-    private EditText title, message;
+    private EditText rating, review;
     private Button mSubmit;
 
     // Progress Dialog
@@ -58,8 +58,8 @@ public class AddReview extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_review);
 
-        title = (EditText)findViewById(R.id.title);
-        message = (EditText)findViewById(R.id.message);
+        rating = (EditText)findViewById(R.id.rating);
+        review = (EditText)findViewById(R.id.review);
 
         mSubmit = (Button)findViewById(R.id.submit);
         mSubmit.setOnClickListener(this);
@@ -108,8 +108,8 @@ public class AddReview extends Activity implements View.OnClickListener {
         protected String doInBackground(String... strings) {
             // Check for success tag
             int success;
-            String post_title = title.getText().toString();
-            String post_message = message.getText().toString();
+            String post_rating = rating.getText().toString();
+            String post_review = review.getText().toString();
 
             //Retrieving Saved Username Data:
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(AddReview.this);
@@ -119,8 +119,8 @@ public class AddReview extends Activity implements View.OnClickListener {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("user", post_user));
-                params.add(new BasicNameValuePair("title", post_title));
-                params.add(new BasicNameValuePair("message", post_message));
+                params.add(new BasicNameValuePair("rating", post_rating));
+                params.add(new BasicNameValuePair("review", post_review));
 
                 Log.d("request!", "starting");
 
