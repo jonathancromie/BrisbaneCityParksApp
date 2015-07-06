@@ -32,7 +32,8 @@ public class ResultsActivity extends Activity {
     // private static final String READ_COMMENTS_URL = "http://xxx.xxx.x.x:1234/webservice/comments.php";
 
     //testing on Emulator:
-    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php";
+//    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php";
+    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php?search=Sandgate";
 
     //testing from a real server:
     //private static final String SEARCH_PARKS_URL = "http://www.mybringback.com/webservice/search.php";
@@ -208,7 +209,7 @@ public class ResultsActivity extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... arg0) {
             updateJSONData();
             return null;
         }
