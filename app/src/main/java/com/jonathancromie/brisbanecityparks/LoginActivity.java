@@ -3,8 +3,10 @@ package com.jonathancromie.brisbanecityparks;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -150,6 +152,14 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                     Log.d("Login Successful!", json.toString());
+
+                    // save user data
+                    SharedPreferences sp = PreferenceManager
+                            .getDefaultSharedPreferences(LoginActivity.this);
+                    SharedPreferences.Editor edit = sp.edit();
+                    edit.putString("email", emailAddress);
+                    edit.commit();
+
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     finish();
                     startActivity(i);

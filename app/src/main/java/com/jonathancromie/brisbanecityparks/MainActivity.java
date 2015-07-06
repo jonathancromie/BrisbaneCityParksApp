@@ -3,8 +3,10 @@ package com.jonathancromie.brisbanecityparks;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -89,6 +91,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 //        new DisplayResults().execute();
+
+
+    }
+
+    private void saveSearch() {
+        // save user data
+        String query = search.getText().toString();
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("search", query);
+        edit.commit();
+
         Intent i = new Intent(MainActivity.this, ResultsActivity.class);
         startActivity(i);
     }

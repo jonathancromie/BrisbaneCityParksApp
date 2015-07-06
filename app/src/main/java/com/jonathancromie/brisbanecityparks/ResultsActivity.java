@@ -2,7 +2,9 @@ package com.jonathancromie.brisbanecityparks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +35,7 @@ public class ResultsActivity extends Activity {
 
     //testing on Emulator:
 //    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php";
-    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php?search=Sandgate";
+    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php?search=";
 
     //testing from a real server:
     //private static final String SEARCH_PARKS_URL = "http://www.mybringback.com/webservice/search.php";
@@ -41,7 +43,7 @@ public class ResultsActivity extends Activity {
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_NAME = "name";
-    private static final String TAG_POSTS = "results";
+    private static final String TAG_RESULTS = "results";
     private static final String TAG_POST_ID = "post_id";
     private static final String TAG_SUBURB = "suburb";
     private static final String TAG_STREET = "street";
@@ -91,11 +93,15 @@ public class ResultsActivity extends Activity {
 
         mResultList = new ArrayList<HashMap<String, String>>();
 
+        //Retrieving search query
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ResultsActivity.this);
+        String search = sp.getString("search", "query");
+
         // Bro, it's time to power up the J parser
         JSONParser jParser = new JSONParser();
         // Feed the beast our comments url, and it spits us
         //back a JSON object.  Boo-yeah Jerome.
-        JSONObject json = jParser.getJSONFromUrl(SEARCH_PARKS_URL);
+        JSONObject json = jParser.getJSONFromUrl(SEARCH_PARKS_URL+search);
 
         //when parsing JSON stuff, we should probably
         //try to catch any exceptions:
@@ -105,7 +111,7 @@ public class ResultsActivity extends Activity {
             //before we tried to read the individual posts, but I lied...
             //mComments will tell us how many "posts" or comments are
             //available
-            mResults = json.getJSONArray(TAG_POSTS);
+            mResults = json.getJSONArray(TAG_RESULTS);
 
             // looping through all posts according to the json object returned
             for (int i = 0; i < mResults.length(); i++) {
