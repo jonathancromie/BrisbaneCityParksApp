@@ -88,64 +88,66 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        new DisplayResults().execute();
+//        new DisplayResults().execute();
+        Intent i = new Intent(MainActivity.this, ResultsActivity.class);
+        startActivity(i);
     }
 
-    private class DisplayResults extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Collecting results...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... strins) {
-            // Check for success tag
-            int success;
-            String searchQuery = search.getText().toString();
-            try {
-                // Building Parameters
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("searchQuery", searchQuery));
-
-                Log.d("request!", "starting");
-                // getting product details by making HTTP request
-                JSONObject json = jsonParser.makeHttpRequest(
-                        LOGIN_URL, "POST", params);
-
-                // check your log for json response
-                Log.d("Search attempt", json.toString());
-
-                // json success tag
-                success = json.getInt(TAG_SUCCESS);
-                if (success == 1) {
-                    Log.d("Search Successful!", json.toString());
-                    finish();
-                    return json.getString(TAG_MESSAGE);
-                }else{
-                    Log.d("Search Failure!", json.getString(TAG_MESSAGE));
-                    return json.getString(TAG_MESSAGE);
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog once product deleted
-            pDialog.dismiss();
-            if (file_url != null){
-                Toast.makeText(MainActivity.this, file_url, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
+//    private class DisplayResults extends AsyncTask<String, String, String> {
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            pDialog = new ProgressDialog(MainActivity.this);
+//            pDialog.setMessage("Collecting results...");
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(true);
+//            pDialog.show();
+//        }
+//
+//        @Override
+//        protected String doInBackground(String... strins) {
+//            // Check for success tag
+//            int success;
+//            String searchQuery = search.getText().toString();
+//            try {
+//                // Building Parameters
+//                List<NameValuePair> params = new ArrayList<NameValuePair>();
+//                params.add(new BasicNameValuePair("searchQuery", searchQuery));
+//
+//                Log.d("request!", "starting");
+//                // getting product details by making HTTP request
+//                JSONObject json = jsonParser.makeHttpRequest(
+//                        LOGIN_URL, "POST", params);
+//
+//                // check your log for json response
+//                Log.d("Search attempt", json.toString());
+//
+//                // json success tag
+//                success = json.getInt(TAG_SUCCESS);
+//                if (success == 1) {
+//                    Log.d("Search Successful!", json.toString());
+//                    finish();
+//                    return json.getString(TAG_MESSAGE);
+//                }else{
+//                    Log.d("Search Failure!", json.getString(TAG_MESSAGE));
+//                    return json.getString(TAG_MESSAGE);
+//
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String file_url) {
+//            // dismiss the dialog once product deleted
+//            pDialog.dismiss();
+//            if (file_url != null){
+//                Toast.makeText(MainActivity.this, file_url, Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
 }
