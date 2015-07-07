@@ -1,40 +1,74 @@
 package com.jonathancromie.brisbanecityparks;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.support.widget.v7.Toolbar;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+
+
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private EditText search;
     private Button mSubmit;
-    private TextView results;
 
-    // Progress Dialog
-    private ProgressDialog pDialog;
+    private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
-    // JSON parser class
-    JSONParser jsonParser = new JSONParser();
+    private Toolbar toolbar;
+
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+
+    DrawerLayout drawer;
+
+    ActionBarDrawerToggle mDrawerToggle;
 
     //php login script location:
 
@@ -54,6 +88,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,39 +96,105 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         search = (EditText) findViewById(R.id.search);
         mSubmit = (Button) findViewById(R.id.submit);
-        results = (TextView) findViewById(R.id.results);
 
         mSubmit.setOnClickListener(this);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
+        mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_black_24dp));
+        mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_black_24dp));
+        mNavItems.add(new NavItem("Trending", "Which parks are popular right now", R.drawable.ic_trending_up_black_24dp));
+        mNavItems.add(new NavItem("Settings", "Customise your settings", R.drawable.ic_settings_black_24dp));
+        mNavItems.add(new NavItem("Help & Feedback", "Get help or submit feedback", R.drawable.ic_help_black_24dp));
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        String user = sp.getString("email", "emailAddress");
+        String desc = "Visit Profile";
+        int profile = 0;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        return super.onOptionsItemSelected(item);
-    }
+        mRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+        });
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+
+                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                    drawer.closeDrawers();
+                    Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
+
+                    return true;
+
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+        });
+
+        mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
+
+        mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
+
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
+        mDrawerToggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.openDrawer,R.string.closeDrawer){
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                // code here will execute once the drawer is opened( As I dont want anything happened whe drawer is
+                // open I am not going to put anything here)
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                // Code here will execute once drawer is closed
+            }
+
+
+
+        }; // Drawer Toggle Object Made
+        Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
+        mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onClick(View v) {
-//        new DisplayResults().execute();
         saveSearch();
-
-
     }
 
     private void saveSearch() {
@@ -108,62 +209,4 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Intent i = new Intent(MainActivity.this, ResultsActivity.class);
         startActivity(i);
     }
-
-//    private class DisplayResults extends AsyncTask<String, String, String> {
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            pDialog = new ProgressDialog(MainActivity.this);
-//            pDialog.setMessage("Collecting results...");
-//            pDialog.setIndeterminate(false);
-//            pDialog.setCancelable(true);
-//            pDialog.show();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... strins) {
-//            // Check for success tag
-//            int success;
-//            String searchQuery = search.getText().toString();
-//            try {
-//                // Building Parameters
-//                List<NameValuePair> params = new ArrayList<NameValuePair>();
-//                params.add(new BasicNameValuePair("searchQuery", searchQuery));
-//
-//                Log.d("request!", "starting");
-//                // getting product details by making HTTP request
-//                JSONObject json = jsonParser.makeHttpRequest(
-//                        LOGIN_URL, "POST", params);
-//
-//                // check your log for json response
-//                Log.d("Search attempt", json.toString());
-//
-//                // json success tag
-//                success = json.getInt(TAG_SUCCESS);
-//                if (success == 1) {
-//                    Log.d("Search Successful!", json.toString());
-//                    finish();
-//                    return json.getString(TAG_MESSAGE);
-//                }else{
-//                    Log.d("Search Failure!", json.getString(TAG_MESSAGE));
-//                    return json.getString(TAG_MESSAGE);
-//
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String file_url) {
-//            // dismiss the dialog once product deleted
-//            pDialog.dismiss();
-//            if (file_url != null){
-//                Toast.makeText(MainActivity.this, file_url, Toast.LENGTH_LONG).show();
-//            }
-//        }
-//    }
 }
