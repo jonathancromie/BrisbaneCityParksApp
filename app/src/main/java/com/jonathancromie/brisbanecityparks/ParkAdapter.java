@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         TextView parkStreet;
         TextView parkSuburb;
 
+        ImageButton btnRateReview;
+        ImageButton btnFavourite;
+        ImageButton btnShare;
+
         ParkViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
@@ -33,14 +38,24 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             parkStreet = (TextView) itemView.findViewById(R.id.txtStreet);
             parkSuburb = (TextView) itemView.findViewById(R.id.txtSuburb);
 
-            itemView.setOnClickListener(this);
+            btnRateReview = (ImageButton) itemView.findViewById(R.id.btnRateReview);
+            btnFavourite = (ImageButton) itemView.findViewById(R.id.btnFavourite);
+            btnShare = (ImageButton) itemView.findViewById(R.id.btnShare);
+
+            btnRateReview.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View view) {
-            Intent i = new Intent(view.getContext(), AddReview.class);
-            view.getContext().startActivity(i);
+        public void onClick(View v) {
+            Intent i = new Intent(v.getContext(), AddReview.class);
+            v.getContext().startActivity(i);
         }
+
+//        @Override
+//        public void onClick(View view) {
+//            Intent i = new Intent(view.getContext(), AddReview.class);
+//            view.getContext().startActivity(i);
+//        }
     }
 
     private ArrayList<ParkInfo> parkList;

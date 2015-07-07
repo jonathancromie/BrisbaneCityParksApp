@@ -5,21 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     card_view:cardCornerRadius="4dp"
-    android:layout_margin="5dp">
+    card_view:cardElevation="2dp"
+    card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="#ff95ff5d"
-            android:text="Park Details"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/white"
-            android:textSize="14dp"/>
 
 
         <TextView
@@ -28,10 +19,10 @@
             android:layout_height="wrap_content"
             android:text="Name"
             android:gravity="center_vertical"
-            android:textSize="10dp"
-            android:layout_below="@id/title"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="14sp"
+            android:textColor="@color/primary_text"
+            android:paddingTop="24dp"
+            android:paddingLeft="16dp" />
 
         <TextView
             android:id="@+id/txtStreet"
@@ -39,21 +30,54 @@
             android:layout_height="wrap_content"
             android:text="Street"
             android:gravity="center_vertical"
-            android:textSize="10dp"
+            android:textSize="14sp"
             android:layout_below="@id/txtName"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"/>
+            android:paddingLeft="16dp"
+            android:textColor="@color/secondary_text"
+            android:paddingTop="8dp" />
 
         <TextView
             android:id="@+id/txtSuburb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Suburb"
-            android:textSize="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="150dp"
-            android:layout_alignBaseline="@id/txtName"/>
+            android:textSize="14sp"
+            android:layout_below="@+id/txtStreet"
+            android:paddingLeft="16dp"
+            android:textColor="@color/secondary_text"
+            android:paddingBottom="16dp"
+            android:paddingTop="8dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnRateReview"
+            android:layout_below="@+id/txtSuburb"
+            android:src="@drawable/ic_rate_review_white_24dp"
+            android:padding="8dp"
+            android:layout_alignLeft="@+id/txtSuburb"
+            android:layout_alignStart="@+id/txtSuburb"
+            android:onClick="addReview" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnFavourite"
+            android:src="@drawable/ic_favorite_white_24dp"
+            android:padding="8dp"
+            android:layout_alignTop="@+id/btnRateReview"
+            android:layout_toRightOf="@+id/btnRateReview"
+            android:layout_toEndOf="@+id/btnRateReview" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnShare"
+            android:src="@drawable/ic_share_white_24dp"
+            android:padding="8dp"
+            android:layout_alignTop="@+id/btnFavourite"
+            android:layout_toRightOf="@+id/btnFavourite"
+            android:layout_toEndOf="@+id/btnFavourite" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

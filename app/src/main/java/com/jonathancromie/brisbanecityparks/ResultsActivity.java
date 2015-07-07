@@ -84,17 +84,6 @@ public class ResultsActivity extends Activity {
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-//
-//        mAdapter = new ParkAdapter(mResultList);
-//        mRecyclerView.setAdapter(mAdapter);
-
-//        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-//        mAdapter = new ParkAdapter(mResultList);
-//        recList.setHasFixedSize(true);
-//        LinearLayoutManager llm = new LinearLayoutManager(this);
-//        llm.setOrientation(LinearLayoutManager.VERTICAL);
-//        recList.setLayoutManager(llm);
-
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -105,12 +94,6 @@ public class ResultsActivity extends Activity {
         new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-//    public void addComment(View v)
-//    {
-//        Intent i = new Intent(ReadComments.this, AddComment.class);
-//        startActivity(i);
-//    }
-
     /**
      * Retrieves json data of comments
      */
@@ -120,7 +103,6 @@ public class ResultsActivity extends Activity {
         // to the json element name, and the content, for example,
         // message it the tag, and "I'm awesome" as the content..
 
-//        mResultList = new ArrayList<HashMap<String, String>>();
         mResultList = new ArrayList<ParkInfo>();
 
         //Retrieving search query
@@ -182,16 +164,6 @@ public class ResultsActivity extends Activity {
 //        use our single_post xml template for each item in our list,
 //        and place the appropriate info from the list to the
 //        correct GUI id.  Order is important here.
-
-//        ParkAdapter mAdapter = new ParkAdapter(mResultList);
-////        recList.setAdapter(mAdapter);
-//        setListAdapter((ListAdapter) mAdapter);
-
-//        mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
-//        mRecyclerView.setHasFixedSize(true);
-//
-//        mLayoutManager = new LinearLayoutManager(this);
-//        mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new ParkAdapter(mResultList);
         mRecyclerView.setAdapter(mAdapter);

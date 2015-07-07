@@ -44,7 +44,7 @@ public class AddReview extends Activity implements View.OnClickListener {
     // private static final String POST_COMMENT_URL = "http://xxx.xxx.x.x:1234/webservice/addcomment.php";
 
     //testing on Emulator:
-    private static final String POST_REVIEW_URL = "http://10.0.2.2:1234/webservice/addreview.php";
+    private static final String POST_REVIEW_URL = "http://10.0.2.2:80/webservice/addreview.php";
 
     //testing from a real server:
     //private static final String POST_COMMENT_URL = "http://www.mybringback.com/webservice/addcomment.php";
