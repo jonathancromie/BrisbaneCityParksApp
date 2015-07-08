@@ -30,10 +30,7 @@ import java.util.ArrayList;
 
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
-
-    private EditText search;
-    private Button mSubmit;
+public class MainActivity extends ActionBarActivity {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
@@ -70,11 +67,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        search = (EditText) findViewById(R.id.search);
-        mSubmit = (Button) findViewById(R.id.submit);
-
-        mSubmit.setOnClickListener(this);
 
         mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_grey_24dp));
         mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_grey_24dp));
@@ -130,7 +122,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
 
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
 
         mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
@@ -154,24 +145,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
     }
 
-    @Override
-    public void onClick(View v) {
-        saveSearch();
-    }
-
-    private void saveSearch() {
-        // save user data
-        String query = search.getText().toString();
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(MainActivity.this);
-        SharedPreferences.Editor edit = sp.edit();
-        edit.putString("search", query);
-        edit.commit();
-
-        Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-        startActivity(i);
-    }
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -189,6 +162,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
         }
+
+        final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent i = new Intent(MainActivity.this, ResultsActivity.class);
+                i.putExtra("query", query);
+                startActivity(i);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return true;
+            }
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
 //        return super.onCreateOptionsMenu(menu);
 
         return true;

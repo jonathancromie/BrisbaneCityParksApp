@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class ResultsActivity extends Activity {
+public class ResultsActivity extends ActionBarActivity {
 
     RecyclerView mRecyclerView;
     ParkAdapter mAdapter;
@@ -93,10 +93,12 @@ public class ResultsActivity extends Activity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void handleIntent(Intent intent) {
+        query = intent.getStringExtra("query");
+        new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            query = intent.getStringExtra(SearchManager.QUERY);
+//            query = intent.getStringExtra("query");
             //use the query to search your data somehow
-            new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//            new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
@@ -105,13 +107,14 @@ public class ResultsActivity extends Activity {
         handleIntent(intent);
     }
 
-//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        //loading the results via AsyncTask
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //loading the results via AsyncTask
 //        new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//    }
+//        handleIntent(getIntent());
+    }
 
     /**
      * Retrieves json data of comments
