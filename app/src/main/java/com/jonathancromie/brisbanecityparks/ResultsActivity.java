@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -40,6 +41,8 @@ public class ResultsActivity extends Activity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
+
+    String query;
 
     //php search parks script
 
@@ -79,6 +82,8 @@ public class ResultsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
+        handleIntent(getIntent());
+
         mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
         mRecyclerView.setHasFixedSize(true);
 
@@ -87,17 +92,31 @@ public class ResultsActivity extends Activity {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //loading the results via AsyncTask
-        new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = intent.getStringExtra(SearchManager.QUERY);
+            //use the query to search your data somehow
+            new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        //loading the results via AsyncTask
+//        new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//    }
 
     /**
      * Retrieves json data of comments
      */
-    public void updateJSONData() {
+    public void updateJSONData(String query) {
         // Instantiate the arraylist to contain all the JSON data.
         // we are going to use a bunch of key-value pairs, referring
         // to the json element name, and the content, for example,
@@ -113,7 +132,7 @@ public class ResultsActivity extends Activity {
         JSONParser jParser = new JSONParser();
         // Feed the beast our comments url, and it spits us
         //back a JSON object.  Boo-yeah Jerome.
-        JSONObject json = jParser.getJSONFromUrl(SEARCH_PARKS_URL+search);
+        JSONObject json = jParser.getJSONFromUrl(SEARCH_PARKS_URL+query);
 
         //when parsing JSON stuff, we should probably
         //try to catch any exceptions:
@@ -205,7 +224,7 @@ public class ResultsActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-            updateJSONData();
+            updateJSONData(query);
             return null;
         }
 

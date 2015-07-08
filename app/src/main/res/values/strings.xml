@@ -28,4 +28,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="openDrawer">Drawer is open</string>
     <string name="closeDrawer">Drawer is closed</string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Enter park name, street or suburb</string>
 </resources>

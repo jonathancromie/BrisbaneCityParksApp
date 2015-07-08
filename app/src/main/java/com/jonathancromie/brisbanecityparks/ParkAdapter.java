@@ -34,6 +34,9 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         ParkViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
+
+            cardView.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
+
             parkName = (TextView) itemView.findViewById(R.id.txtName);
             parkStreet = (TextView) itemView.findViewById(R.id.txtStreet);
             parkSuburb = (TextView) itemView.findViewById(R.id.txtSuburb);

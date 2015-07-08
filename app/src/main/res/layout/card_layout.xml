@@ -12,7 +12,7 @@
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true"
-        android:background="@color/primary_light">
+        android:layout_margin="8dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
