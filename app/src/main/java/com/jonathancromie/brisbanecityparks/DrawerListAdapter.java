@@ -35,11 +35,13 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         int holderID;
 
-        TextView textView;
-        ImageView imageView;
-        ImageView profile;
+        TextView textTitle;
+        TextView textSubTitle;
+        ImageView imageIcon;
+
         TextView user;
         TextView desc;
+        ImageView profile;
         Context contxt;
 
         public ViewHolder(View itemView, int ViewType, Context c) {
@@ -49,9 +51,14 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
             itemView.setOnClickListener(this);
 
             if (ViewType == TYPE_ITEM) {
-                textView = (TextView) itemView.findViewById(R.id.title);
-                imageView = (ImageView) itemView.findViewById(R.id.icon);
+                textTitle = (TextView) itemView.findViewById(R.id.title);
+                textSubTitle = (TextView) itemView.findViewById(R.id.subTitle);
+                imageIcon = (ImageView) itemView.findViewById(R.id.icon);
                 holderID = 1;
+
+                textTitle.setPadding(32, 6, 0, 0);
+                textSubTitle.setPadding(32, 6, 0, 0);
+                imageIcon.setPadding(16, 6, 0, 0);
             }
             else {
                 user = (TextView) itemView.findViewById(R.id.user);
@@ -79,7 +86,7 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
     @Override
     public DrawerListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main,parent,false); //Inflating the layout
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false); //Inflating the layout
 
             ViewHolder vhItem = new ViewHolder(v,viewType,context); //Creating ViewHolder and passing the object of type view
 
@@ -104,8 +111,9 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, final int position) {
         if(holder.holderID ==1) {                              // as the list view is going to be called after the header view so we decrement the
             // position by 1 and pass it to the holder while setting the text and image
-            holder.textView.setText(mNavItems.get(position-1).title); // Setting the Text with the array of our Titles
-            holder.imageView.setImageResource(mNavItems.get(position-1).icon);// Settimg the image with array of our icons
+            holder.textTitle.setText(mNavItems.get(position-1).title); // Setting the Text with the array of our Titles
+            holder.textSubTitle.setText(mNavItems.get(position-1).subTitle);
+            holder.imageIcon.setImageResource(mNavItems.get(position-1).icon);// Settimg the image with array of our icons
         }
         else{
 

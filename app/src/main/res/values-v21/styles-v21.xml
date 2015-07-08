@@ -12,13 +12,11 @@
 
         <item name="android:statusBarColor">@color/primary_dark</item>
 
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
 
-        <item name="android:textColor">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
 
-        <!--<item name="android:windowBackground">@color/white</item>-->
-
-        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/primary</item>
 
         <item name="android:divider">@color/divider</item>
 

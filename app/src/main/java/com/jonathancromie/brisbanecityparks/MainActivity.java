@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private EditText search;
     private Button mSubmit;
@@ -83,8 +83,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         String desc = "Visit Profile";
         int profile = 0;
 
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
         mRecyclerView.setHasFixedSize(true);
@@ -128,6 +128,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
+
         mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
