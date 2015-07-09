@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jonathancromie.brisbanecityparks.RegisterEmailActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/park5"
+            android:scaleType="centerCrop"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_vertical">
+
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:id="@+id/textEmail"
+                android:padding="8dp"
+                android:hint="Email Address"
+                android:background="@color/icons"
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/textPassword"
+                android:layout_margin="8dp" />
+
+            <Button
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:text="Create Account"
+                android:id="@+id/buttonCreateAccount"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="8dp"
+                android:background="@color/divider"
+                android:textColor="@color/primary_dark" />
+
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:id="@+id/textPassword"
+                android:padding="8dp"
+                android:hint="Password"
+                android:background="@color/icons"
+                android:layout_above="@+id/buttonCreateAccount"
+                android:layout_alignLeft="@+id/buttonCreateAccount"
+                android:layout_alignStart="@+id/buttonCreateAccount" />
+        </RelativeLayout>
+    </FrameLayout>
+
+</RelativeLayout>

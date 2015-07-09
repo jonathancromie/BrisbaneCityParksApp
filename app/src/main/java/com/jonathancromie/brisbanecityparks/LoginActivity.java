@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -27,7 +28,8 @@ import java.util.List;
 public class LoginActivity extends Activity implements View.OnClickListener{
 
     private EditText email, pass;
-    private Button mSubmit, mRegister;
+    private Button mSubmit;
+    private TextView register;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -66,11 +68,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         //setup buttons
         mSubmit = (Button)findViewById(R.id.login);
-        mRegister = (Button)findViewById(R.id.register);
+
+        register = (TextView) findViewById(R.id.register);
 
         //register listeners
         mSubmit.setOnClickListener(this);
-        mRegister.setOnClickListener(this);
+
+        register.setOnClickListener(this);
     }
 
     @Override
