@@ -40,7 +40,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
     // private static final String LOGIN_URL = "http://xxx.xxx.x.x:1234/webservice/register.php";
 
     //testing on Emulator:
-    private static final String LOGIN_URL = "http://10.0.2.2:80/webservice/register.php";
+    private static final String REGISTER_URL = "http://10.0.2.2:80/webservice/register.php";
 
     //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/register.php";
@@ -115,43 +115,43 @@ public class RegisterActivity extends Activity implements OnClickListener {
         protected String doInBackground(String... strings) {
             // Check for success tag
             int success;
-            String emailAddress = email.getText().toString();
-            String password = pass.getText().toString();
-            String firstName = firstname.getText().toString();
-            String lastName = lastname.getText().toString();
+            String email_address = email.getText().toString();
+            String first_name = firstname.getText().toString();
+            String last_name = lastname.getText().toString();
             String gender = sex.getText().toString();
-            String dateOfBirth = dob.getText().toString();
-            String phoneNumber = phone.getText().toString();
-            String addressStreet = street.getText().toString();
-            String addressSuburb = suburb.getText().toString();
-            String addressCity = city.getText().toString();
-            String addressPostCode = postcode.getText().toString();
-            String addressState = state.getText().toString();
+            String date_of_birth = dob.getText().toString();
+            String phone_number = phone.getText().toString();
+            String street_address = street.getText().toString();
+            String suburb_address = suburb.getText().toString();
+            String city_address = city.getText().toString();
+            String post_code_address = postcode.getText().toString();
+            String state_address = state.getText().toString();
+            String password = pass.getText().toString();
 
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("emailAddress", emailAddress));
+                params.add(new BasicNameValuePair("email_address", email_address));
+                params.add(new BasicNameValuePair("first_name", first_name));
+                params.add(new BasicNameValuePair("last_name", last_name));
+                params.add(new BasicNameValuePair("sex", gender));
+                params.add(new BasicNameValuePair("dob", date_of_birth));
+                params.add(new BasicNameValuePair("phone_number", phone_number));
+                params.add(new BasicNameValuePair("street", street_address));
+                params.add(new BasicNameValuePair("suburb", suburb_address));
+                params.add(new BasicNameValuePair("city", city_address));
+                params.add(new BasicNameValuePair("post_code", post_code_address));
+                params.add(new BasicNameValuePair("state", state_address));
                 params.add(new BasicNameValuePair("password", password));
-                params.add(new BasicNameValuePair("firstName", firstName));
-                params.add(new BasicNameValuePair("lastName", lastName));
-                params.add(new BasicNameValuePair("gender", gender));
-                params.add(new BasicNameValuePair("dateOfBirth", dateOfBirth));
-                params.add(new BasicNameValuePair("phoneNumber", phoneNumber));
-                params.add(new BasicNameValuePair("addressStreet", addressStreet));
-                params.add(new BasicNameValuePair("addressSuburb", addressSuburb));
-                params.add(new BasicNameValuePair("addressCity", addressCity));
-                params.add(new BasicNameValuePair("addressPostCode", addressPostCode));
-                params.add(new BasicNameValuePair("addressState", addressState));
 
                 Log.d("request!", "starting");
 
                 //Posting user data to script
                 JSONObject json = jsonParser.makeHttpRequest(
-                        LOGIN_URL, "POST", params);
+                        REGISTER_URL, "POST", params);
 
                 // full json response
-                Log.d("Login attempt", json.toString());
+                Log.d("Register attempt", json.toString());
 
                 // json success element
                 success = json.getInt(TAG_SUCCESS);
@@ -160,7 +160,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
                     finish();
                     return json.getString(TAG_MESSAGE);
                 }else{
-                    Log.d("Login Failure!", json.getString(TAG_MESSAGE));
+                    Log.d("Registering Failed!", json.getString(TAG_MESSAGE));
                     return json.getString(TAG_MESSAGE);
 
                 }
@@ -176,7 +176,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
             // dismiss the dialog once product deleted
             pDialog.dismiss();
             if (file_url != null){
-                Toast.makeText(RegisterActivity.this, file_url, Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, file_url, Toast.LENGTH_SHORT).show();
             }
         }
     }
