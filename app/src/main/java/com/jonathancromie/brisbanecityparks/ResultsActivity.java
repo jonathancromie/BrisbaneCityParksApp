@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +56,8 @@ public class ResultsActivity extends ActionBarActivity {
 
     //testing on Emulator:
 //    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php";
-    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php?search=";
+//    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php?search=";
+    private static final String SEARCH_PARKS_URL = "http://192.168.1.4:80/webservice/search.php?search=";
 
     //testing from a real server:
     //private static final String SEARCH_PARKS_URL = "http://www.mybringback.com/webservice/search.php";
@@ -63,9 +66,11 @@ public class ResultsActivity extends ActionBarActivity {
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_NAME = "name";
     private static final String TAG_RESULTS = "results";
-    private static final String TAG_POST_ID = "post_id";
+    private static final String TAG_ID = "id";
     private static final String TAG_SUBURB = "suburb";
     private static final String TAG_STREET = "street";
+    private static final String TAG_LAT = "latitude";
+    private static final String TAG_LONG = "longitude";
     //it's important to note that the message is both in the parent branch of
     //our JSON tree that displays a "Post Available" or a "No Post Available" message,
     //and there is also a message for each individual post, listed under the "posts"
@@ -107,15 +112,6 @@ public class ResultsActivity extends ActionBarActivity {
         handleIntent(intent);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //loading the results via AsyncTask
-//        new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-//        handleIntent(getIntent());
-    }
-
     /**
      * Retrieves json data of comments
      */
@@ -152,20 +148,25 @@ public class ResultsActivity extends ActionBarActivity {
                 JSONObject c = mResults.getJSONObject(i);
 
                 //gets the content of each tag
+                String id = c.getString(TAG_ID);
                 String name = c.getString(TAG_NAME);
                 String street = c.getString(TAG_STREET);
                 String suburb = c.getString(TAG_SUBURB);
-
+                String latitude = c.getString(TAG_LAT);
+                String longitude = c.getString(TAG_LONG);
 
                 // creating new HashMap
                 HashMap<String, String> map = new HashMap<String, String>();
 
+                map.put(TAG_ID, id);
                 map.put(TAG_NAME, name);
                 map.put(TAG_STREET, street);
                 map.put(TAG_SUBURB, suburb);
+                map.put(TAG_LAT, latitude);
+                map.put(TAG_LONG, longitude);
 
                 // adding HashList to ArrayList
-                mResultList.add(new ParkInfo(name, street, suburb));
+                mResultList.add(new ParkInfo(name, street, suburb, latitude, longitude));
 
                 //annndddd, our JSON data is up to date same with our array list
             }

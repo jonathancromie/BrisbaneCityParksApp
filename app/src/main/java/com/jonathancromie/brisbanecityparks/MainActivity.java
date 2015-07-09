@@ -116,6 +116,11 @@ public class MainActivity extends ActionBarActivity {
             public void onTouchEvent(RecyclerView rv, MotionEvent e) {
 
             }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
         });
 
         mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager

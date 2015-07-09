@@ -30,4 +30,5 @@
     <string name="closeDrawer">Drawer is closed</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Enter park name, street or suburb</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

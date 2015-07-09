@@ -27,6 +27,9 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         TextView parkStreet;
         TextView parkSuburb;
 
+        String latitude;
+        String longitude;
+
         ImageButton btnRateReview;
         ImageButton btnFavourite;
         ImageButton btnShare;
@@ -45,12 +48,20 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             btnFavourite = (ImageButton) itemView.findViewById(R.id.btnFavourite);
             btnShare = (ImageButton) itemView.findViewById(R.id.btnShare);
 
+            cardView.setOnClickListener(this);
             btnRateReview.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(v.getContext(), AddReview.class);
+//            Intent i = new Intent(v.getContext(), AddReview.class);
+//            v.getContext().startActivity(i);
+            Intent i = new Intent(v.getContext(), ParkActivity.class);
+            i.putExtra("parkName", parkName.getText());
+            i.putExtra("parkStreet", parkStreet.getText());
+            i.putExtra("parkSuburb", parkSuburb.getText());
+            i.putExtra("latitude", latitude);
+            i.putExtra("longitude", longitude);
             v.getContext().startActivity(i);
         }
 
@@ -93,6 +104,8 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         parkViewHolder.parkName.setText(pi.name);
         parkViewHolder.parkStreet.setText(pi.street);
         parkViewHolder.parkSuburb.setText(pi.suburb);
+        parkViewHolder.latitude = pi.latitude;
+        parkViewHolder.longitude = pi.longitude;
     }
 
     @Override
