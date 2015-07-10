@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class RegisterEmailActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -15,6 +16,8 @@ public class RegisterEmailActivity extends ActionBarActivity implements View.OnC
     EditText textPassword;
 
     Button buttonCreateAccount;
+
+    TextView login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,9 @@ public class RegisterEmailActivity extends ActionBarActivity implements View.OnC
 
         buttonCreateAccount = (Button) findViewById(R.id.buttonCreateAccount);
         buttonCreateAccount.setOnClickListener(this);
+
+        login = (TextView) findViewById(R.id.login);
+        login.setOnClickListener(this);
     }
 
     @Override
@@ -52,9 +58,17 @@ public class RegisterEmailActivity extends ActionBarActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(RegisterEmailActivity.this, RegisterActivity.class);
-        i.putExtra("email", textEmail.getText());
-        i.putExtra("password", textPassword.getText());
-        startActivity(i);
+        switch (v.getId()) {
+            // refactor
+            case R.id.buttonCreateAccount:
+                Intent intentRegister = new Intent(RegisterEmailActivity.this, RegisterActivity.class);
+                intentRegister.putExtra("email", textEmail.getText().toString());
+                intentRegister.putExtra("password", textPassword.getText().toString());
+                startActivity(intentRegister);
+                break;
+            case R.id.login:
+                Intent intentLogin = new Intent(RegisterEmailActivity.this, LoginActivity.class);
+                startActivity(intentLogin);
+        }
     }
 }

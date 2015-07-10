@@ -24,13 +24,16 @@
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:ems="10"
+            android:inputType="textEmailAddress"
             android:hint="Email Address"
             android:background="@color/icons"
             android:layout_gravity="center"
             android:padding="8dp"
             android:layout_above="@+id/password"
             android:layout_alignRight="@+id/password"
-            android:layout_alignEnd="@+id/password" />
+            android:layout_alignEnd="@+id/password"
+            android:nextFocusDown="@+id/password"/>
+            <requestFocus />
 
         <EditText
             android:id="@+id/password"
@@ -45,8 +48,6 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="8dp"
             android:padding="8dp">
-
-            <requestFocus />
         </EditText>
 
         <Button
@@ -72,7 +73,7 @@
             android:layout_gravity="center_horizontal|bottom"
             android:layout_below="@+id/login"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="57dp"
+            android:layout_marginTop="60dp"
             android:textSize="15dp" />
 
     </RelativeLayout>

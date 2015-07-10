@@ -28,7 +28,8 @@
                 android:background="@color/icons"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@+id/textPassword"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:inputType="textEmailAddress" />
 
             <Button
                 android:layout_width="250dp"
@@ -50,7 +51,20 @@
                 android:background="@color/icons"
                 android:layout_above="@+id/buttonCreateAccount"
                 android:layout_alignLeft="@+id/buttonCreateAccount"
-                android:layout_alignStart="@+id/buttonCreateAccount" />
+                android:layout_alignStart="@+id/buttonCreateAccount"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Already a member? Login here"
+                android:id="@+id/login"
+                android:textColor="@color/icons"
+                android:textSize="15dp"
+                android:layout_below="@+id/buttonCreateAccount"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp" />
         </RelativeLayout>
     </FrameLayout>
 

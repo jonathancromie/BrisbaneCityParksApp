@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,8 @@ import android.widget.Toast;
 
 public class RegisterActivity extends Activity implements OnClickListener {
 
-    private EditText email, pass, firstname, lastname, sex, dob, phone, street, suburb, city, postcode, state;
+    private String email_address, password, first_name, last_name, gender, date_of_birth, phone_number, street_address, suburb_address, city_address, post_code_address, state_address;
+    private EditText firstname, lastname, sex, dob, phone, street, suburb, city, postcode, state;
     private Button mRegister;
 
     // Progress Dialog
@@ -55,8 +57,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        email = (EditText)findViewById(R.id.email);
-        pass = (EditText)findViewById(R.id.password);
+
         firstname = (EditText)findViewById(R.id.firstname);
         lastname = (EditText)findViewById(R.id.lastname);
         sex = (EditText)findViewById(R.id.sex);
@@ -96,6 +97,16 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View view) {
+        first_name = firstname.getText().toString();
+        last_name = lastname.getText().toString();
+        gender = sex.getText().toString();
+        date_of_birth = dob.getText().toString();
+        street_address = street.getText().toString();
+        suburb_address = suburb.getText().toString();
+        city_address = city.getText().toString();
+        post_code_address = postcode.getText().toString();
+        state_address = state.getText().toString();
+
         new CreateUser().execute();
     }
 
@@ -113,20 +124,23 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
         @Override
         protected String doInBackground(String... strings) {
+
+            Intent i = getIntent();
+            email_address = i.getStringExtra("email");
+            password = i.getStringExtra("password");
+
             // Check for success tag
             int success;
-            String email_address = email.getText().toString();
-            String first_name = firstname.getText().toString();
-            String last_name = lastname.getText().toString();
-            String gender = sex.getText().toString();
-            String date_of_birth = dob.getText().toString();
-            String phone_number = phone.getText().toString();
-            String street_address = street.getText().toString();
-            String suburb_address = suburb.getText().toString();
-            String city_address = city.getText().toString();
-            String post_code_address = postcode.getText().toString();
-            String state_address = state.getText().toString();
-            String password = pass.getText().toString();
+//            String first_name = firstname.getText().toString();
+//            String last_name = lastname.getText().toString();
+//            String gender = sex.getText().toString();
+//            String date_of_birth = dob.getText().toString();
+//            String phone_number = phone.getText().toString();
+//            String street_address = street.getText().toString();
+//            String suburb_address = suburb.getText().toString();
+//            String city_address = city.getText().toString();
+//            String post_code_address = postcode.getText().toString();
+//            String state_address = state.getText().toString();
 
             try {
                 // Building Parameters
@@ -158,6 +172,8 @@ public class RegisterActivity extends Activity implements OnClickListener {
                 if (success == 1) {
                     Log.d("User Created!", json.toString());
                     finish();
+                    Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
                     return json.getString(TAG_MESSAGE);
                 }else{
                     Log.d("Registering Failed!", json.getString(TAG_MESSAGE));

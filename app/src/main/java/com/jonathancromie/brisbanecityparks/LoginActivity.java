@@ -37,6 +37,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
 
+    String email_address;
+    String password;
+
     //php login script location:
 
     //localhost :
@@ -63,6 +66,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
 
         //setup input fields
+
         email = (EditText)findViewById(R.id.email);
         pass = (EditText)findViewById(R.id.password);
 
@@ -104,11 +108,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         // determine which button was pressed:
         switch (v.getId()) {
             case R.id.login:
+                email_address = email.getText().toString();
+                password = pass.getText().toString();
                 new AttemptLogin().execute();
 
                 break;
             case R.id.register:
-                Intent i = new Intent(this, RegisterActivity.class);
+                Intent i = new Intent(this, RegisterEmailActivity.class);
                 startActivity(i);
                 break;
 
@@ -136,12 +142,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         protected String doInBackground(String... strings) {
             // Check for success tag
             int success;
-            String emailAddress = email.getText().toString();
-            String password = pass.getText().toString();
+//            email_address = email.getText().toString();
+//            String password = pass.getText().toString();
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("email", emailAddress));
+                params.add(new BasicNameValuePair("email", email_address));
                 params.add(new BasicNameValuePair("password", password));
 
                 Log.d("request!", "starting");
@@ -161,7 +167,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(LoginActivity.this);
                     SharedPreferences.Editor edit = sp.edit();
-                    edit.putString("email", emailAddress);
+                    edit.putString("email", email_address);
                     edit.commit();
 
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
