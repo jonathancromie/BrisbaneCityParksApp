@@ -8,7 +8,7 @@
     android:id="@+id/profileBox"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="@color/primary"
+    android:background="@color/accent"
     android:padding="8dp" >
 
     <ImageView

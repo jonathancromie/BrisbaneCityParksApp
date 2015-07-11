@@ -26,14 +26,15 @@
 
             <TextView
             android:id="@+id/txtName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
             android:gravity="center_vertical"
-            android:textSize="14sp"
+            android:textSize="24sp"
             android:textColor="@color/primary_text"
             android:paddingTop="24dp"
-            android:paddingLeft="16dp" />
+                android:paddingLeft="16dp"
+                android:singleLine="false" />
 
             <TextView
             android:id="@+id/txtStreet"
@@ -44,8 +45,9 @@
             android:textSize="14sp"
             android:layout_below="@id/txtName"
             android:paddingLeft="16dp"
-            android:textColor="@color/secondary_text"
-            android:paddingTop="8dp" />
+            android:textColor="@color/primary_text"
+            android:paddingTop="8dp"
+                android:singleLine="true" />
 
             <TextView
             android:id="@+id/txtSuburb"
@@ -55,50 +57,56 @@
             android:textSize="14sp"
             android:layout_below="@+id/txtStreet"
             android:paddingLeft="16dp"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/primary_text"
             android:paddingBottom="16dp"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+                android:singleLine="true" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buttonLayout"
+            android:background="@color/white"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="150dp"
             android:layout_alignParentBottom="true">
 
-            <ImageButton
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnRateReview"
-                android:src="@drawable/ic_rate_review_white_24dp"
-                android:padding="8dp"
-                android:onClick="addReview" />
+                android:id="@+id/explore"
+                android:text="Explore"
+                android:background="@color/transparent"
+                android:textColor="@color/primary_dark" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/share"
+                android:text="Share"
+                android:background="@color/transparent"
+                android:textColor="@color/primary_dark"
+                android:layout_toRightOf="@+id/explore"
+                android:layout_centerHorizontal="true" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnFavourite"
-                android:src="@drawable/ic_favorite_white_24dp"
-                android:padding="8dp"
-                android:layout_alignTop="@+id/btnRateReview"
-                android:layout_toRightOf="@+id/btnRateReview"
-                android:layout_toEndOf="@+id/btnRateReview" />
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/favourite"
+                android:src="@drawable/ic_favorite_pink_24dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:background="@color/white" />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnShare"
-                android:src="@drawable/ic_share_white_24dp"
-                android:padding="8dp"
-                android:layout_alignTop="@+id/btnFavourite"
-                android:layout_toRightOf="@+id/btnFavourite"
-                android:layout_toEndOf="@+id/btnFavourite" />
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
+
+
 
 </RelativeLayout>

@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by jonathancromie on 11/07/15.
@@ -17,12 +19,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
 
-        CardView addReviewCard;
-        TextView review;
-        TextView rating;
+//        CardView addReviewCard;
+//        TextView txtReview;
+//        TextView txtRating;
+//        Button buttonSubmit;
 
         CardView reviewCard;
         TextView email;
+        TextView review;
+        TextView rating;
         TextView datePosted;
 
         String parkID;
@@ -30,15 +35,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         public ReviewViewHolder(View itemView) {
             super(itemView);
             // Add Review Card
-            addReviewCard = (CardView) itemView.findViewById(R.id.add_review_card);
-            addReviewCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
-            review = (TextView) itemView.findViewById(R.id.review);
-            rating = (TextView) itemView.findViewById(R.id.rating);
+//            addReviewCard = (CardView) itemView.findViewById(R.id.add_review_card);
+//            addReviewCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
+//            txtReview = (TextView) itemView.findViewById(R.id.txtReview);
+//            txtRating = (TextView) itemView.findViewById(R.id.txtRating);
+
 
             // List of Reviews
             reviewCard = (CardView) itemView.findViewById(R.id.review_card);
-            reviewCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
             email = (TextView) itemView.findViewById(R.id.email);
+            review = (TextView) itemView.findViewById(R.id.txtReview);
+            rating = (TextView) itemView.findViewById(R.id.rating);
             datePosted = (TextView) itemView.findViewById(R.id.date_posted);
         }
     }

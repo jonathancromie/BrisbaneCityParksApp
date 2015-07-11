@@ -68,6 +68,7 @@ public class ParkActivity extends AppCompatActivity {
 
     //testing from a real server:
     //private static final String READ_COMMENTS_URL = "http://www.mybringback.com/webservice/comments.php";
+//    private static final String READ_REVIEWS_URL = "http://192.168.1.9:80/webservice/reviews.php?id=";
 
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";

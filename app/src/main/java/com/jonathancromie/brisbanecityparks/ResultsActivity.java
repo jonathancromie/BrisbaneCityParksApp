@@ -73,10 +73,12 @@ public class ResultsActivity extends AppCompatActivity {
     //testing on Emulator:
 //    private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php";
     private static final String SEARCH_PARKS_URL = "http://10.0.2.2:80/webservice/search.php?search=";
-//    private static final String SEARCH_PARKS_URL = "http://192.168.1.4:80/webservice/search.php?search=";
+
 
     //testing from a real server:
     //private static final String SEARCH_PARKS_URL = "http://www.mybringback.com/webservice/search.php";
+//    private static final String SEARCH_PARKS_URL = "http://192.168.1.4:80/webservice/search.php?search=";
+//    private static final String SEARCH_PARKS_URL = "http://60.240.144.91:80/webservice/search.php?search=";
 
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";

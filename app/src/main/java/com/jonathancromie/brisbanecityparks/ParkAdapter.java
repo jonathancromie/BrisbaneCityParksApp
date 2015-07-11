@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -30,38 +31,49 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         String latitude;
         String longitude;
 
-        ImageButton btnRateReview;
-        ImageButton btnFavourite;
-        ImageButton btnShare;
+        Button explore;
+        Button share;
+        ImageButton favourite;
 
         ParkViewHolder(View itemView) {
             super(itemView);
             resultCard = (CardView) itemView.findViewById(R.id.result_card);
 
-            resultCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
-
             parkName = (TextView) itemView.findViewById(R.id.txtName);
             parkStreet = (TextView) itemView.findViewById(R.id.txtStreet);
             parkSuburb = (TextView) itemView.findViewById(R.id.txtSuburb);
 
-            btnRateReview = (ImageButton) itemView.findViewById(R.id.btnRateReview);
-            btnFavourite = (ImageButton) itemView.findViewById(R.id.btnFavourite);
-            btnShare = (ImageButton) itemView.findViewById(R.id.btnShare);
+            explore = (Button) itemView.findViewById(R.id.explore);
+            share = (Button) itemView.findViewById(R.id.share);
+            favourite = (ImageButton) itemView.findViewById(R.id.favourite);
 
             resultCard.setOnClickListener(this);
-            btnRateReview.setOnClickListener(this);
+            explore.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(v.getContext(), ParkActivity.class);
-            i.putExtra("parkID", parkID);
-            i.putExtra("parkName", parkName.getText());
-            i.putExtra("parkStreet", parkStreet.getText());
-            i.putExtra("parkSuburb", parkSuburb.getText());
-            i.putExtra("latitude", latitude);
-            i.putExtra("longitude", longitude);
-            v.getContext().startActivity(i);
+
+            switch (v.getId()) {
+                case R.id.explore:
+                    Intent i = new Intent(v.getContext(), ParkActivity.class);
+                    i.putExtra("parkID", parkID);
+                    i.putExtra("parkName", parkName.getText());
+                    i.putExtra("parkStreet", parkStreet.getText());
+                    i.putExtra("parkSuburb", parkSuburb.getText());
+                    i.putExtra("latitude", latitude);
+                    i.putExtra("longitude", longitude);
+                    v.getContext().startActivity(i);
+                    break;
+
+                case R.id.share:
+                    break;
+
+                case R.id.favourite:
+                    break;
+
+            }
+
         }
     }
 

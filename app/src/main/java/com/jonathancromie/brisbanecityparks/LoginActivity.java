@@ -53,6 +53,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/login.php";
+//    private static final String LOGIN_URL = "http://192.168.1.9:80/webservice/login.php";
 
     //JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";

@@ -46,6 +46,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
 
     //testing from a real server:
     //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/register.php";
+//    private static final String REGISTER_URL = "http://192.168.1.9:80/webservice/register.php";
 
     //ids
     private static final String TAG_SUCCESS = "success";
