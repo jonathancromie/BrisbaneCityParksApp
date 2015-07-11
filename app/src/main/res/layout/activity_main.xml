@@ -20,7 +20,7 @@
     </RelativeLayout>
 
 
-
+    <!-- Navigation Drawer -->
     <RelativeLayout
         android:layout_width="280dp"
         android:layout_height="match_parent"

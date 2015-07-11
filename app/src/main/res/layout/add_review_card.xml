@@ -43,7 +43,8 @@
                 android:ems="10"
                 android:layout_below="@+id/review"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_alignParentStart="true"
+                android:hint="Rating">
             </EditText>
 
         </RelativeLayout>

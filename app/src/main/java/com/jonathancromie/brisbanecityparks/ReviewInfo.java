@@ -10,7 +10,7 @@ public class ReviewInfo {
     String rating;
     String date_posted;
 
-    public ReviewInfo(String park_id, String email, String rating, String review, String date_posted) {
+    public ReviewInfo(String park_id, String email, String review, String rating, String date_posted) {
         this.park_id = park_id;
         this.email = email;
         this.review = review;

@@ -52,10 +52,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddReview"
-            android:label="@string/title_activity_add_review" >
-        </activity>
-        <activity
             android:name=".ParkActivity"
             android:label="@string/title_activity_park" >
         </activity>

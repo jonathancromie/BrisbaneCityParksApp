@@ -54,8 +54,6 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
 
         @Override
         public void onClick(View v) {
-//            Intent i = new Intent(v.getContext(), AddReview.class);
-//            v.getContext().startActivity(i);
             Intent i = new Intent(v.getContext(), ParkActivity.class);
             i.putExtra("parkID", parkID);
             i.putExtra("parkName", parkName.getText());
@@ -65,12 +63,6 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             i.putExtra("longitude", longitude);
             v.getContext().startActivity(i);
         }
-
-//        @Override
-//        public void onClick(View view) {
-//            Intent i = new Intent(view.getContext(), AddReview.class);
-//            view.getContext().startActivity(i);
-//        }
     }
 
     private ArrayList<ParkInfo> parkList;

@@ -17,21 +17,28 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
 
-        CardView reviewCard;
-        TextView email;
+        CardView addReviewCard;
         TextView review;
         TextView rating;
+
+        CardView reviewCard;
+        TextView email;
         TextView datePosted;
+
+        String parkID;
 
         public ReviewViewHolder(View itemView) {
             super(itemView);
-            reviewCard = (CardView) itemView.findViewById(R.id.review_card);
-
-            reviewCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
-
-            email = (TextView) itemView.findViewById(R.id.email);
+            // Add Review Card
+            addReviewCard = (CardView) itemView.findViewById(R.id.add_review_card);
+            addReviewCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
             review = (TextView) itemView.findViewById(R.id.review);
             rating = (TextView) itemView.findViewById(R.id.rating);
+
+            // List of Reviews
+            reviewCard = (CardView) itemView.findViewById(R.id.review_card);
+            reviewCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
+            email = (TextView) itemView.findViewById(R.id.email);
             datePosted = (TextView) itemView.findViewById(R.id.date_posted);
         }
     }
@@ -51,7 +58,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     public ReviewViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         // create a new view
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.result_card, viewGroup, false);
+                .inflate(R.layout.review_card, viewGroup, false);
 
         return new ReviewViewHolder(v);
     }
@@ -59,6 +66,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     @Override
     public void onBindViewHolder(ReviewViewHolder reviewViewHolder, int i) {
         ReviewInfo ri = reviewList.get(i);
+        reviewViewHolder.parkID = ri.park_id;
         reviewViewHolder.email.setText(ri.email);
         reviewViewHolder.review.setText(ri.review);
         reviewViewHolder.rating.setText(ri.rating);

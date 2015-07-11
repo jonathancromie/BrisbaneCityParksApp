@@ -10,11 +10,15 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,11 +39,23 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class ResultsActivity extends ActionBarActivity {
+public class ResultsActivity extends AppCompatActivity {
 
-    RecyclerView mRecyclerView;
-    ParkAdapter mAdapter;
-    LayoutManager mLayoutManager;
+    private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
+
+    private Toolbar toolbar;
+
+    RecyclerView mainRecyclerView;
+    ParkAdapter mainAdapter;
+    LayoutManager mainLayoutManager;
+
+    RecyclerView drawerRecyclerView;
+    RecyclerView.Adapter drawerAdapter;
+    RecyclerView.LayoutManager drawerLayoutManager;
+
+    DrawerLayout drawer;
+
+    ActionBarDrawerToggle mDrawerToggle;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -87,13 +103,94 @@ public class ResultsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
+        mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_grey_24dp));
+        mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_grey_24dp));
+        mNavItems.add(new NavItem("Trending", "Which parks are popular right now", R.drawable.ic_trending_up_grey_24dp));
+        mNavItems.add(new NavItem("Settings", "Customise your settings", R.drawable.ic_settings_grey_24dp));
+        mNavItems.add(new NavItem("Help & Feedback", "Get help or submit feedback", R.drawable.ic_help_grey_24dp));
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ResultsActivity.this);
+        String user = sp.getString("email", "emailAddress");
+        String desc = "Visit Profile";
+        int profile = 0;
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         handleIntent(getIntent());
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
-        mRecyclerView.setHasFixedSize(true);
+        mainRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+        mainRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mainLayoutManager = new LinearLayoutManager(this);
+        mainRecyclerView.setLayoutManager(mainLayoutManager);
+
+        drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
+        drawerRecyclerView.setHasFixedSize(true);
+        drawerAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
+        drawerRecyclerView.setAdapter(drawerAdapter);
+
+        final GestureDetector mGestureDetector = new GestureDetector(ResultsActivity.this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+        });
+
+        drawerRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+
+                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                    drawer.closeDrawers();
+                    Toast.makeText(ResultsActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
+
+                    return true;
+
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+
+        drawerLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
+
+        drawerRecyclerView.setLayoutManager(drawerLayoutManager);                 // Setting the layout Manager
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                // code here will execute once the drawer is opened( As I dont want anything happened whe drawer is
+                // open I am not going to put anything here)
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                // Code here will execute once drawer is closed
+            }
+
+
+        }; // Drawer Toggle Object Made
+        drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
+        mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -188,8 +285,8 @@ public class ResultsActivity extends ActionBarActivity {
 //        and place the appropriate info from the list to the
 //        correct GUI id.  Order is important here.
 
-        mAdapter = new ParkAdapter(mResultList);
-        mRecyclerView.setAdapter(mAdapter);
+        mainAdapter = new ParkAdapter(mResultList);
+        mainRecyclerView.setAdapter(mainAdapter);
     }
 
     @Override
