@@ -7,7 +7,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -37,7 +39,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         LatLng marker = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-        map.addMarker(new MarkerOptions().position(marker).title("Park Name"));
+        map.addMarker(new MarkerOptions().position(marker).
+                                        title("Park Name").
+                                        icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         map.moveCamera(CameraUpdateFactory.newLatLng(marker));
     }
 }

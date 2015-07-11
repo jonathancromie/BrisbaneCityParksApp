@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -29,6 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         TextView review;
         TextView rating;
         TextView datePosted;
+        RatingBar ratingBar;
 
         String parkID;
 
@@ -46,6 +48,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             email = (TextView) itemView.findViewById(R.id.email);
             review = (TextView) itemView.findViewById(R.id.txtReview);
             rating = (TextView) itemView.findViewById(R.id.rating);
+//            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
+
             datePosted = (TextView) itemView.findViewById(R.id.date_posted);
         }
     }

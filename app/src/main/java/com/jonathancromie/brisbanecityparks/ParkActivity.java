@@ -3,6 +3,7 @@ package com.jonathancromie.brisbanecityparks;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,6 +119,8 @@ public class ParkActivity extends AppCompatActivity {
 
         mainRecyclerView.setHasFixedSize(true);
 
+        mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+
         mainLayoutManager = new LinearLayoutManager(this);
 
         mainRecyclerView.setLayoutManager(mainLayoutManager);
@@ -191,6 +195,7 @@ public class ParkActivity extends AppCompatActivity {
         drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
     }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void handleIntent(Intent intent) {
         parkID = intent.getStringExtra("parkID");
