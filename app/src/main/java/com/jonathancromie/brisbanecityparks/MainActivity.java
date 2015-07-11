@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
@@ -172,7 +173,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Intent i = new Intent(MainActivity.this, ResultsActivity.class);
-                i.putExtra("query", query);
+                i.putExtra("parkName", query);
                 startActivity(i);
                 return true;
             }

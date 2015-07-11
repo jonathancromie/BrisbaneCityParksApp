@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jonathancromie on 6/07/15.
@@ -22,11 +21,12 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
     // you provide access to all the views for a data item in a view holder
     public static class ParkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        CardView cardView;
+        CardView resultCard;
         TextView parkName;
         TextView parkStreet;
         TextView parkSuburb;
 
+        String parkID;
         String latitude;
         String longitude;
 
@@ -36,9 +36,9 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
 
         ParkViewHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            resultCard = (CardView) itemView.findViewById(R.id.result_card);
 
-            cardView.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
+            resultCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
 
             parkName = (TextView) itemView.findViewById(R.id.txtName);
             parkStreet = (TextView) itemView.findViewById(R.id.txtStreet);
@@ -48,7 +48,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             btnFavourite = (ImageButton) itemView.findViewById(R.id.btnFavourite);
             btnShare = (ImageButton) itemView.findViewById(R.id.btnShare);
 
-            cardView.setOnClickListener(this);
+            resultCard.setOnClickListener(this);
             btnRateReview.setOnClickListener(this);
         }
 
@@ -57,6 +57,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
 //            Intent i = new Intent(v.getContext(), AddReview.class);
 //            v.getContext().startActivity(i);
             Intent i = new Intent(v.getContext(), ParkActivity.class);
+            i.putExtra("parkID", parkID);
             i.putExtra("parkName", parkName.getText());
             i.putExtra("parkStreet", parkStreet.getText());
             i.putExtra("parkSuburb", parkSuburb.getText());
@@ -90,7 +91,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
     public ParkViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         // create a new view
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.card_layout, viewGroup, false);
+                .inflate(R.layout.result_card, viewGroup, false);
 
         return new ParkViewHolder(v);
     }
@@ -101,6 +102,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         ParkInfo pi = parkList.get(i);
+        parkViewHolder.parkID = pi.id;
         parkViewHolder.parkName.setText(pi.name);
         parkViewHolder.parkStreet.setText(pi.street);
         parkViewHolder.parkSuburb.setText(pi.suburb);

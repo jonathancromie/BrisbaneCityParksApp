@@ -44,7 +44,7 @@ public class ResultsActivity extends ActionBarActivity {
     // Progress Dialog
     private ProgressDialog pDialog;
 
-    String query;
+    String parkName;
 
     //php search parks script
 
@@ -98,7 +98,7 @@ public class ResultsActivity extends ActionBarActivity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void handleIntent(Intent intent) {
-        query = intent.getStringExtra("query");
+        parkName = intent.getStringExtra("parkName");
         new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 //            query = intent.getStringExtra("query");
@@ -166,7 +166,7 @@ public class ResultsActivity extends ActionBarActivity {
                 map.put(TAG_LONG, longitude);
 
                 // adding HashList to ArrayList
-                mResultList.add(new ParkInfo(name, street, suburb, latitude, longitude));
+                mResultList.add(new ParkInfo(id, name, street, suburb, latitude, longitude));
 
                 //annndddd, our JSON data is up to date same with our array list
             }
@@ -228,7 +228,7 @@ public class ResultsActivity extends ActionBarActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-            updateJSONData(query);
+            updateJSONData(parkName);
             return null;
         }
 
