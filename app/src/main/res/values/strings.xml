@@ -32,4 +32,7 @@
     <string name="search_hint">Enter park name, street or suburb</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_register_email">RegisterEmailActivity</string>
+    <string name="title_activity_top_rated">TopRatedActivity</string>
+    <string name="title_activity_trending">TrendingActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>
