@@ -39,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:clickable="true"
+            android:onClick="showDialog"
             android:layout_alignBottom="@+id/cardList"
             android:layout_alignRight="@+id/cardList"
             android:src="@drawable/ic_create_white_24dp"

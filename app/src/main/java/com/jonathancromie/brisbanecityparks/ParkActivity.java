@@ -2,13 +2,19 @@ package com.jonathancromie.brisbanecityparks;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,21 +24,32 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class ParkActivity extends AppCompatActivity {
 
@@ -57,6 +74,11 @@ public class ParkActivity extends AppCompatActivity {
 
     String parkID;
 
+    String reviewText;
+    String ratingText;
+
+    String date_posted;
+
     //php read comments script
 
     //localhost :
@@ -72,8 +94,15 @@ public class ParkActivity extends AppCompatActivity {
     //private static final String READ_COMMENTS_URL = "http://www.mybringback.com/webservice/comments.php";
 //    private static final String READ_REVIEWS_URL = "http://192.168.1.9:80/webservice/reviews.php?id=";
 
+    //testing on Emulator:
+    private static final String POST_REVIEW_URL = "http://10.0.2.2:80/webservice/addreview.php";
+
+    //testing from a real server:
+    //private static final String POST_REVIEW_URL = "http://www.mybringback.com/webservice/addcomment.php";
+
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MESSAGE = "message";
 
     private static final String TAG_REVIEWS = "reviews";
     private static final String TAG_ID = "park_id";
@@ -92,7 +121,7 @@ public class ParkActivity extends AppCompatActivity {
     private ArrayList<ReviewInfo> mReviewList;
 
 
-    private Button btnMap;
+//    private Button btnMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +156,7 @@ public class ParkActivity extends AppCompatActivity {
 
 //        btnMap = (Button) findViewById(R.id.btnMap);
 //        btnMap.setOnClickListener(this);
+
 
         drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
         drawerRecyclerView.setHasFixedSize(true);
@@ -207,12 +237,40 @@ public class ParkActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
-    //    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        //loading the comments via AsyncTask
-//        new LoadReviews().execute();
-//    }
+    public void showDialog(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        final View view = inflater.inflate(R.layout.dialog_add_review, null);
+        builder.setView(view);
+
+        final EditText review = (EditText) view.findViewById(R.id.editReview);
+        final EditText rating = (EditText) view.findViewById(R.id.editRating);
+
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // add review
+                reviewText = review.getText().toString();
+                ratingText = rating.getText().toString();
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                date_posted = sdf.format(new Date());
+
+                new AddReview().execute();
+            }
+        })
+
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder.create();
+        builder.show();
+    }
 
     /**
      * Retrieves json data of comments
@@ -316,7 +374,7 @@ public class ParkActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... arg0) {
             updateJSONdata(parkID);
             return null;
         }
@@ -328,6 +386,77 @@ public class ParkActivity extends AppCompatActivity {
             updateList();
         }
     }
+
+    private class AddReview extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(ParkActivity.this);
+            pDialog.setMessage("Posting Review...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            // Check for success tag
+            int success;
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ParkActivity.this);
+            String email = sp.getString("email", "anon");
+
+            try {
+                // Building Parameters
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("park_id", parkID));
+                params.add(new BasicNameValuePair("email", email));
+                params.add(new BasicNameValuePair("review", reviewText));
+                params.add(new BasicNameValuePair("rating", ratingText));
+                params.add(new BasicNameValuePair("date_posted", date_posted));
+
+                Log.d("request!", "starting");
+
+                // JSON parser class
+                JSONParser jsonParser = new JSONParser();
+
+                //Posting user data to script
+                JSONObject json = jsonParser.makeHttpRequest(
+                        POST_REVIEW_URL, "POST", params);
+
+                // full json response
+                Log.d("Post Review attempt", json.toString());
+
+                // json success element
+                success = json.getInt(TAG_SUCCESS);
+                if (success == 1) {
+                    Log.d("Review Added!", json.toString());
+                    finish();
+                    return json.getString(TAG_MESSAGE);
+                }else{
+                    Log.d("Review Failure!", json.getString(TAG_MESSAGE));
+                    return json.getString(TAG_MESSAGE);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once product deleted
+            pDialog.dismiss();
+            if (file_url != null){
+                Toast.makeText(ParkActivity.this, file_url, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
 
 //    @Override
