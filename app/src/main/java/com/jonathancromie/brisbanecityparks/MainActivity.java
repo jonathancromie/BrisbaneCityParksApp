@@ -57,7 +57,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
-public class MainActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class MainActivity extends _BaseClass {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // favourites?
+        mNavItems.add(new NavItem("Reviews", R.drawable.ic_rate_review_blue_24dp));
+        mNavItems.add(new NavItem("Favourites", R.drawable.ic_favorite_pink_24dp));
         mNavItems.add(new NavItem("Local", R.drawable.ic_place_grey_24dp));
         mNavItems.add(new NavItem("Top Rated", R.drawable.ic_grade_grey_24dp));
         mNavItems.add(new NavItem("Trending", R.drawable.ic_trending_up_grey_24dp));
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
         drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
         drawerRecyclerView.setHasFixedSize(true);
+        drawerRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST), 2);
         drawerAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
         drawerRecyclerView.setAdapter(drawerAdapter);
 
