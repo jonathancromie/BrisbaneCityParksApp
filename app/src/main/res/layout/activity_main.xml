@@ -17,28 +17,21 @@
             layout="@layout/toolbar" >
         </include>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mLatitudeText"
-            android:text="Latitude"
-            android:layout_below="@+id/toolbar"
+        <!-- A RecyclerView with some commonly used attributes -->
+        <android.support.v7.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/cardList"
+            android:launchMode="singleTop"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mLongitudeText"
-            android:text="Longitude"
-            android:layout_below="@+id/mLatitudeText"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mLastUpdateTimeText"
-            android:text="Last updated"
-            android:layout_below="@+id/mLongitudeText"/>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            tools:context=".MainActivity"
+            android:layout_below="@+id/toolbar" />
 
     </RelativeLayout>
 

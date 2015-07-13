@@ -58,13 +58,9 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
     private Toolbar toolbar;
 
-//    RecyclerView mainRecyclerView;
-//    ReviewAdapter mainAdapter;
-//    RecyclerView.LayoutManager mainLayoutManager;
-
-    TextView mLatitudeText;
-    TextView mLongitudeText;
-    TextView mLastUpdateTimeText;
+    RecyclerView mainRecyclerView;
+    ReviewAdapter mainAdapter;
+    RecyclerView.LayoutManager mainLayoutManager;
 
     RecyclerView drawerRecyclerView;
     RecyclerView.Adapter drawerAdapter;
@@ -135,11 +131,11 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        mainRecyclerView = (RecyclerView) findViewById(R.id.cardList);
-//        mainRecyclerView.setHasFixedSize(true);
-//        mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-//        mainLayoutManager = new LinearLayoutManager(this);
-//        mainRecyclerView.setLayoutManager(mainLayoutManager);
+        mainRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+        mainRecyclerView.setHasFixedSize(true);
+        mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        mainLayoutManager = new LinearLayoutManager(this);
+        mainRecyclerView.setLayoutManager(mainLayoutManager);
 
 
         drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
@@ -203,8 +199,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                             break;
                     }
 
-
-
                     return true;
 
                 }
@@ -246,13 +240,9 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
 
-        mLatitudeText = (TextView) findViewById(R.id.mLatitudeText);
-        mLongitudeText = (TextView) findViewById(R.id.mLongitudeText);
-        mLastUpdateTimeText = (TextView) findViewById(R.id.mLastUpdateTimeText);
+
 
         buildGoogleApiClient();
-
-
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -377,8 +367,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     }
 
     private void updateUI() {
-        mLatitudeText.setText(String.valueOf(mCurrentLocation.getLatitude()));
-        mLongitudeText.setText(String.valueOf(mCurrentLocation.getLongitude()));
-        mLastUpdateTimeText.setText(mLastUpdateTime);
+
     }
 }
