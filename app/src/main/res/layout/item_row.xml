@@ -14,28 +14,20 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:src="@drawable/ic_home_grey_24dp" />
+        android:src="@drawable/ic_place_grey_24dp" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:gravity="center_vertical"
         android:textColor="@color/primary_text"
         android:text="Line 1"
         android:textStyle="bold"
-        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/icon"
-        android:layout_toEndOf="@+id/icon" />
-
-    <TextView android:id="@+id/subTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Line 2"
-        android:layout_toRightOf="@+id/icon"
-        android:layout_below="@+id/title"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toEndOf="@+id/icon"
+        android:layout_alignBottom="@+id/icon"
+        android:layout_alignTop="@+id/icon" />
 
 </RelativeLayout>

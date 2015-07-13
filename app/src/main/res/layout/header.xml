@@ -8,8 +8,8 @@
     android:id="@+id/profileBox"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="@color/accent"
-    android:padding="8dp" >
+        android:padding="8dp"
+        android:background="@color/accent">
 
     <ImageView
     android:id="@+id/profile"
@@ -27,7 +27,7 @@
     android:orientation="vertical" >
 
     <TextView
-    android:id="@+id/user"
+    android:id="@+id/name"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Name"
@@ -36,12 +36,12 @@
     android:textStyle="bold" />
 
     <TextView
-    android:id="@+id/desc"
+    android:id="@+id/email"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:layout_marginTop="4dp"
-    android:text="View Profile"
+    android:text="Email"
     android:textColor="@color/primary_text"
     android:textSize="12sp" />
     </LinearLayout>

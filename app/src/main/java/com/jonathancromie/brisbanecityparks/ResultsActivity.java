@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class ResultsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
@@ -116,12 +115,12 @@ public class ResultsActivity extends AppCompatActivity implements GoogleApiClien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_grey_24dp));
-        mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_grey_24dp));
-        mNavItems.add(new NavItem("Trending", "Which parks are popular right now", R.drawable.ic_trending_up_grey_24dp));
-        mNavItems.add(new NavItem("Recent", "Latest reviews", R.drawable.ic_access_time_grey_24dp));
-        mNavItems.add(new NavItem("Settings", "Customise your settings", R.drawable.ic_settings_grey_24dp));
-        mNavItems.add(new NavItem("Help & Feedback", "Get help or submit feedback", R.drawable.ic_help_grey_24dp));
+        mNavItems.add(new NavItem("Local", R.drawable.ic_place_grey_24dp));
+        mNavItems.add(new NavItem("Top Rated", R.drawable.ic_grade_grey_24dp));
+        mNavItems.add(new NavItem("Trending", R.drawable.ic_trending_up_grey_24dp));
+        mNavItems.add(new NavItem("Recent", R.drawable.ic_access_time_grey_24dp));
+        mNavItems.add(new NavItem("Settings", R.drawable.ic_settings_grey_24dp));
+        mNavItems.add(new NavItem("Help & Feedback", R.drawable.ic_help_grey_24dp));
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ResultsActivity.this);
         String user = sp.getString("email", "emailAddress");
@@ -129,6 +128,7 @@ public class ResultsActivity extends AppCompatActivity implements GoogleApiClien
         int profile = 0;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Results");
         setSupportActionBar(toolbar);
 
         handleIntent(getIntent());
@@ -321,6 +321,7 @@ public class ResultsActivity extends AppCompatActivity implements GoogleApiClien
                 map.put(TAG_SUBURB, suburb);
                 map.put(TAG_LAT, latitude);
                 map.put(TAG_LONG, longitude);
+                map.put(TAG_DISTANCE, distance);
 
                 // adding HashList to ArrayList
                 mResultList.add(new ParkInfo(id, name, street, suburb, latitude, longitude, distance));

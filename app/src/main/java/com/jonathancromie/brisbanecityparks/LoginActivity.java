@@ -153,8 +153,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
                 Log.d("request!", "starting");
                 // getting product details by making HTTP request
-                JSONObject json = jsonParser.makeHttpRequest(
-                        LOGIN_URL, "POST", params);
+                JSONObject json = jsonParser.makeHttpRequest(LOGIN_URL, "POST", params);
 
                 // check your log for json response
                 Log.d("Login attempt", json.toString());

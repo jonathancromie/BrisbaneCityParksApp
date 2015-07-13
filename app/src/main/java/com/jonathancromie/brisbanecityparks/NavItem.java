@@ -7,12 +7,10 @@ import android.content.Context;
  */
 public class NavItem {
     String title;
-    String subTitle;
     int icon;
 
-    public NavItem(String title, String subTitle, int icon) {
+    public NavItem(String title, int icon) {
         this.title = title;
-        this.subTitle = subTitle;
         this.icon = icon;
     }
 }

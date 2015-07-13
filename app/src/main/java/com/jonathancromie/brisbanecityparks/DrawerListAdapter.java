@@ -23,8 +23,8 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
 
     private ArrayList<NavItem> mNavItems;
 
-    private String user;
-    private String desc;
+    private String name;
+    private String email;
     private int profile;
     Context context;
 
@@ -32,11 +32,10 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
         int holderID;
 
         TextView textTitle;
-        TextView textSubTitle;
         ImageView imageIcon;
 
-        TextView user;
-        TextView desc;
+        TextView name;
+        TextView email;
         ImageView profile;
         Context contxt;
 
@@ -48,17 +47,15 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
 
             if (ViewType == TYPE_ITEM) {
                 textTitle = (TextView) itemView.findViewById(R.id.title);
-                textSubTitle = (TextView) itemView.findViewById(R.id.subTitle);
                 imageIcon = (ImageView) itemView.findViewById(R.id.icon);
                 holderID = 1;
 
                 textTitle.setPadding(32, 6, 0, 0);
-                textSubTitle.setPadding(32, 6, 0, 0);
                 imageIcon.setPadding(16, 6, 0, 0);
             }
             else {
-                user = (TextView) itemView.findViewById(R.id.user);
-                desc = (TextView) itemView.findViewById(R.id.desc);
+                name = (TextView) itemView.findViewById(R.id.name);
+                email = (TextView) itemView.findViewById(R.id.email);
                 profile = (ImageView) itemView.findViewById(R.id.profile);
                 holderID = 0;
 
@@ -71,10 +68,10 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
         }
     }
 
-    public DrawerListAdapter(ArrayList<NavItem> navItems, String user, String desc, int profile, Context passedContext) {
+    public DrawerListAdapter(ArrayList<NavItem> navItems, String name, String email, int profile, Context passedContext) {
         mNavItems = navItems;
-        this.user = user;
-        this.desc = desc;
+        this.name = name;
+        this.email = email;
         this.profile = profile;
         this.context = passedContext;
     }
@@ -108,14 +105,13 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
         if(holder.holderID ==1) {                              // as the list view is going to be called after the header view so we decrement the
             // position by 1 and pass it to the holder while setting the text and image
             holder.textTitle.setText(mNavItems.get(position-1).title); // Setting the Text with the array of our Titles
-            holder.textSubTitle.setText(mNavItems.get(position-1).subTitle);
             holder.imageIcon.setImageResource(mNavItems.get(position-1).icon);// Settimg the image with array of our icons
         }
         else{
 
             holder.profile.setImageResource(profile);           // Similarly we set the resources for header view
-            holder.user.setText(user);
-            holder.desc.setText(desc);
+            holder.name.setText(name);
+            holder.email.setText(email);
         }
     }
 

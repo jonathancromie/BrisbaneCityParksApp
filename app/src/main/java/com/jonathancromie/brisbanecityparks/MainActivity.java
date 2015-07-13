@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     private Toolbar toolbar;
 
     RecyclerView mainRecyclerView;
-    RecyclerView.Adapter mainAdapter;
+    ParkAdapter mainAdapter;
     RecyclerView.LayoutManager mainLayoutManager;
 
     RecyclerView drawerRecyclerView;
@@ -115,12 +115,12 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         setContentView(R.layout.activity_main);
 
         // favourites?
-        mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_grey_24dp));
-        mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_grey_24dp));
-        mNavItems.add(new NavItem("Trending", "Which parks are popular right now", R.drawable.ic_trending_up_grey_24dp));
-        mNavItems.add(new NavItem("Recent", "Latest reviews", R.drawable.ic_access_time_grey_24dp));
-        mNavItems.add(new NavItem("Settings", "Customise your settings", R.drawable.ic_settings_grey_24dp));
-        mNavItems.add(new NavItem("Help & Feedback", "Get help or submit feedback", R.drawable.ic_help_grey_24dp));
+        mNavItems.add(new NavItem("Local", R.drawable.ic_place_grey_24dp));
+        mNavItems.add(new NavItem("Top Rated", R.drawable.ic_grade_grey_24dp));
+        mNavItems.add(new NavItem("Trending", R.drawable.ic_trending_up_grey_24dp));
+        mNavItems.add(new NavItem("Recent", R.drawable.ic_access_time_grey_24dp));
+        mNavItems.add(new NavItem("Settings", R.drawable.ic_settings_grey_24dp));
+        mNavItems.add(new NavItem("Help & Feedback", R.drawable.ic_help_grey_24dp));
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         String user = sp.getString("email", "emailAddress");
@@ -128,9 +128,10 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         int profile = 0;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Local");
         setSupportActionBar(toolbar);
 
-//        handleIntent(getIntent());
+        handleIntent(getIntent());
 
         mainRecyclerView = (RecyclerView) findViewById(R.id.cardList);
         mainRecyclerView.setHasFixedSize(true);
@@ -298,16 +299,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
                 String latitude = c.getString(TAG_LAT);
                 String longitude = c.getString(TAG_LONG);
                 String distance = c.getString(TAG_DISTANCE);
-
-
-//                Location parkLocation = new Location(name);
-//                parkLocation.setLatitude(Double.parseDouble(latitude));
-//                parkLocation.setLongitude(Double.parseDouble(longitude));
-//
-//                float floatDistance = mLastLocation.distanceTo(parkLocation) / 1000;
-//                String distance = String.valueOf(floatDistance);
-
-
 
                 // creating new HashMap
                 HashMap<String, String> map = new HashMap<String, String>();
