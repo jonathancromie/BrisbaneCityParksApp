@@ -63,11 +63,10 @@ public class TrendingActivity extends AppCompatActivity {
     //php login script location:
 
     //testing on Emulator:
-    private static final String RECENT_REVIEWS_URL = "http://10.0.2.2:80/webservice/trending.php";
+//    private static final String RECENT_REVIEWS_URL = "http://10.0.2.2:80/webservice/trending.php";
 
     //testing from a real server:
-    //private static final String RECENT_REVIEWS_URL = "http://www.mybringback.com/webservice/comments.php";
-//    private static final String RECENT_REVIEWS_URL = "http://192.168.1.9:80/webservice/reviews.php?id=";
+    private static final String RECENT_REVIEWS_URL = "http://60.240.144.91:80/webservice/trending.php";
 
 
     //JSON element ids from repsonse of php script:
