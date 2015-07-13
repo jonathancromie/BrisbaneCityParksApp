@@ -95,6 +95,7 @@ public class TopRatedActivity extends AppCompatActivity {
         mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_grey_24dp));
         mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_grey_24dp));
         mNavItems.add(new NavItem("Trending", "Which parks are popular right now", R.drawable.ic_trending_up_grey_24dp));
+        mNavItems.add(new NavItem("Recent", "Latest reviews", R.drawable.ic_access_time_grey_24dp));
         mNavItems.add(new NavItem("Settings", "Customise your settings", R.drawable.ic_settings_grey_24dp));
         mNavItems.add(new NavItem("Help & Feedback", "Get help or submit feedback", R.drawable.ic_help_grey_24dp));
 
@@ -144,7 +145,9 @@ public class TopRatedActivity extends AppCompatActivity {
                             break;
                         case 1:
                             i = new Intent(TopRatedActivity.this, MainActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
+                            finish();
                             break;
                         case 2:
 //                            i = new Intent(TopRatedActivity.this, TopRatedActivity.class);
@@ -152,11 +155,24 @@ public class TopRatedActivity extends AppCompatActivity {
                             break;
                         case 3:
                             i = new Intent(TopRatedActivity.this, TrendingActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
+                            finish();
                             break;
                         case 4:
+                            i = new Intent(TopRatedActivity.this, RecentActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
+                            break;
+                        case 5:
                             i = new Intent(TopRatedActivity.this, SettingsActivity.class);
                             startActivity(i);
+                            finish();
+                            break;
+                        case 6:
+//                            i = new Intent(TopRated.this, HelpActivity.class);
+//                            startActivity(i);
                             break;
                         default:
                             break;

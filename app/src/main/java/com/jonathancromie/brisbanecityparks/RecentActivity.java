@@ -37,9 +37,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// maybe recent comments for all parks?
 
-public class TrendingActivity extends AppCompatActivity {
+// closest parks maybe..
+
+public class RecentActivity extends AppCompatActivity {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
@@ -63,7 +64,7 @@ public class TrendingActivity extends AppCompatActivity {
     //php login script location:
 
     //testing on Emulator:
-    private static final String RECENT_REVIEWS_URL = "http://10.0.2.2:80/webservice/trending.php";
+    private static final String RECENT_REVIEWS_URL = "http://10.0.2.2:80/webservice/recent.php";
 
     //testing from a real server:
     //private static final String RECENT_REVIEWS_URL = "http://www.mybringback.com/webservice/comments.php";
@@ -90,8 +91,9 @@ public class TrendingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trending);
+        setContentView(R.layout.activity_main);
 
+        // favourites?
         mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_grey_24dp));
         mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_grey_24dp));
         mNavItems.add(new NavItem("Trending", "Which parks are popular right now", R.drawable.ic_trending_up_grey_24dp));
@@ -99,7 +101,7 @@ public class TrendingActivity extends AppCompatActivity {
         mNavItems.add(new NavItem("Settings", "Customise your settings", R.drawable.ic_settings_grey_24dp));
         mNavItems.add(new NavItem("Help & Feedback", "Get help or submit feedback", R.drawable.ic_help_grey_24dp));
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(TrendingActivity.this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(RecentActivity.this);
         String user = sp.getString("email", "emailAddress");
         String desc = "Visit Profile";
         int profile = 0;
@@ -121,7 +123,7 @@ public class TrendingActivity extends AppCompatActivity {
         drawerAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
         drawerRecyclerView.setAdapter(drawerAdapter);
 
-        final GestureDetector mGestureDetector = new GestureDetector(TrendingActivity.this, new GestureDetector.SimpleOnGestureListener() {
+        final GestureDetector mGestureDetector = new GestureDetector(RecentActivity.this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
@@ -136,47 +138,47 @@ public class TrendingActivity extends AppCompatActivity {
 
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                     drawer.closeDrawers();
-//                    Toast.makeText(TrendingActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
                     Intent i;
                     switch (recyclerView.getChildLayoutPosition(child)) {
                         case 0:
-//                            i = new Intent(MainActivity.this, ProfileActivity.class);
+//                            i = new Intent(RecentActivity.this, ProfileActivity.class);
                             break;
                         case 1:
-                            i = new Intent(TrendingActivity.this, MainActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(i);
-                            finish();
+//                            i = new Intent(RecentActivity.this, MainActivity.class);
+//                            startActivity(i);
                             break;
                         case 2:
-                            i = new Intent(TrendingActivity.this, TopRatedActivity.class);
+                            i = new Intent(RecentActivity.this, TopRatedActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 3:
-//                            i = new Intent(TrendingActivity.this, TrendingActivity.class);
-//                            startActivity(i);
-                            break;
-                        case 4:
-                            i = new Intent(TrendingActivity.this, RecentActivity.class);
+                            i = new Intent(RecentActivity.this, TrendingActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
+                        case 4:
+//                            i = new Intent(RecentActivity.this, RecentActivity.class);
+//                            startActivity(i);
+                            break;
                         case 5:
-                            i = new Intent(TrendingActivity.this, SettingsActivity.class);
+                            i = new Intent(RecentActivity.this, SettingsActivity.class);
                             startActivity(i);
                             finish();
                             break;
                         case 6:
-//                            i = new Intent(TrendingActivity.this, HelpActivity.class);
+//                            i = new Intent(RecentActivity.this, HelpActivity.class);
 //                            startActivity(i);
                             break;
                         default:
                             break;
                     }
+
+
 
                     return true;
 
@@ -243,19 +245,19 @@ public class TrendingActivity extends AppCompatActivity {
 
         MenuItem searchItem = menu.findItem(R.id.search_menu);
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) TrendingActivity.this.getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) RecentActivity.this.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = null;
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
         if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(TrendingActivity.this.getComponentName()));
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(RecentActivity.this.getComponentName()));
         }
 
         final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Intent i = new Intent(TrendingActivity.this, ResultsActivity.class);
+                Intent i = new Intent(RecentActivity.this, ResultsActivity.class);
                 i.putExtra("parkName", query);
                 startActivity(i);
                 return true;
@@ -293,7 +295,7 @@ public class TrendingActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(TrendingActivity.this);
+            pDialog = new ProgressDialog(RecentActivity.this);
             pDialog.setMessage("Loading Reviews...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);

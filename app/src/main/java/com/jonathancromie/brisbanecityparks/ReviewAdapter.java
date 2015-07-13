@@ -46,7 +46,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             // List of Reviews
             reviewCard = (CardView) itemView.findViewById(R.id.review_card);
             email = (TextView) itemView.findViewById(R.id.email);
-            review = (TextView) itemView.findViewById(R.id.txtReview);
+            review = (TextView) itemView.findViewById(R.id.review);
             rating = (TextView) itemView.findViewById(R.id.rating);
 //            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
 
