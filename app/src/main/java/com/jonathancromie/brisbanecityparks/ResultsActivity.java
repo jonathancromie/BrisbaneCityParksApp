@@ -211,11 +211,8 @@ public class ResultsActivity extends AppCompatActivity {
         });
 
         drawerLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
-
         drawerRecyclerView.setLayoutManager(drawerLayoutManager);                 // Setting the layout Manager
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
-
         mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
@@ -307,7 +304,7 @@ public class ResultsActivity extends AppCompatActivity {
                 map.put(TAG_LONG, longitude);
 
                 // adding HashList to ArrayList
-                mResultList.add(new ParkInfo(id, name, street, suburb, latitude, longitude));
+//                mResultList.add(new ParkInfo(id, name, street, suburb, latitude, longitude));
 
                 //annndddd, our JSON data is up to date same with our array list
             }

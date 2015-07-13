@@ -26,6 +26,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         TextView parkName;
         TextView parkStreet;
         TextView parkSuburb;
+        TextView parkDistance;
 
         String parkID;
         String latitude;
@@ -42,6 +43,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             parkName = (TextView) itemView.findViewById(R.id.txtName);
             parkStreet = (TextView) itemView.findViewById(R.id.txtStreet);
             parkSuburb = (TextView) itemView.findViewById(R.id.txtSuburb);
+            parkDistance = (TextView) itemView.findViewById(R.id.txtDistance);
 
             explore = (Button) itemView.findViewById(R.id.explore);
             share = (Button) itemView.findViewById(R.id.share);
@@ -112,6 +114,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
         parkViewHolder.parkSuburb.setText(pi.suburb);
         parkViewHolder.latitude = pi.latitude;
         parkViewHolder.longitude = pi.longitude;
+        parkViewHolder.parkDistance .setText(pi.distance + "kms away");
     }
 
     @Override

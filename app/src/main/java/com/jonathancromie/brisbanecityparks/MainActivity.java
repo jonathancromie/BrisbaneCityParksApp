@@ -40,6 +40,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,14 +53,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
+
+public class MainActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
     private Toolbar toolbar;
 
     RecyclerView mainRecyclerView;
-    ReviewAdapter mainAdapter;
+    RecyclerView.Adapter mainAdapter;
     RecyclerView.LayoutManager mainLayoutManager;
 
     RecyclerView drawerRecyclerView;
@@ -76,38 +81,32 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     //php login script location:
 
     //testing on Emulator:
-//    private static final String RECENT_REVIEWS_URL = "http://10.0.2.2:80/webservice/recent.php";
+    private static final String NEARBY_PARKS_URL = "http://10.0.2.2:80/webservice/nearby.php";
 
     //testing from a real server:
     //private static final String RECENT_REVIEWS_URL = "http://www.mybringback.com/webservice/comments.php";
 //    private static final String RECENT_REVIEWS_URL = "http://192.168.1.9:80/webservice/reviews.php?id=";
 
 
-    //JSON element ids from repsonse of php script:
+    //JSON IDS:
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_MESSAGE = "message";
-
-    private static final String TAG_REVIEWS = "reviews";
-    private static final String TAG_ID = "park_id";
-    private static final String TAG_EMAIL = "email";
-    private static final String TAG_REVIEW = "review";
-    private static final String TAG_RATING = "rating";
-    private static final String TAG_DATE = "date_posted";
+    private static final String TAG_NAME = "name";
+    private static final String TAG_RESULTS = "results";
+    private static final String TAG_ID = "id";
+    private static final String TAG_SUBURB = "suburb";
+    private static final String TAG_STREET = "street";
+    private static final String TAG_LAT = "latitude";
+    private static final String TAG_LONG = "longitude";
+    private static final String TAG_DISTANCE = "distance";
 
     //An array of all of our comments
-    private JSONArray mReviews = null;
+    private JSONArray mResults = null;
     //manages all of our comments in a list.
-    private ArrayList<ReviewInfo> mReviewList;
+    private ArrayList<ParkInfo> mResultList;
 
-
-
-    private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    private boolean mResolvingError = false;
-    private boolean mRequestingLocationUpdates = true;
-    private LocationRequest mLocationRequest;
-    private Location mCurrentLocation;
-    private String mLastUpdateTime;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mResolvingError;
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
@@ -130,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        handleIntent(getIntent());
 
         mainRecyclerView = (RecyclerView) findViewById(R.id.cardList);
         mainRecyclerView.setHasFixedSize(true);
@@ -240,26 +241,110 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
 
-
-
-        buildGoogleApiClient();
-    }
-
-    protected synchronized void buildGoogleApiClient() {
+        // Create a GoogleApiClient instance
         mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
                 .build();
-
-        createLocationRequest();
     }
 
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void handleIntent(Intent intent) {
+        new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+
+    /**
+     * Retrieves json data of comments
+     */
+    public void updateJSONData() {
+        // Instantiate the arraylist to contain all the JSON data.
+        // we are going to use a bunch of key-value pairs, referring
+        // to the json element name, and the content, for example,
+        // message it the tag, and "I'm awesome" as the content..
+
+        mResultList = new ArrayList<ParkInfo>();
+
+        // Bro, it's time to power up the J parser
+        JSONParser jParser = new JSONParser();
+        // Feed the beast our comments url, and it spits us
+        //back a JSON object.  Boo-yeah Jerome.
+        JSONObject json = jParser.getJSONFromUrl(NEARBY_PARKS_URL);
+
+        //when parsing JSON stuff, we should probably
+        //try to catch any exceptions:
+        try {
+
+            //I know I said we would check if "Posts were Avail." (success==1)
+            //before we tried to read the individual posts, but I lied...
+            //mComments will tell us how many "posts" or comments are
+            //available
+            mResults = json.getJSONArray(TAG_RESULTS);
+
+            // looping through all posts according to the json object returned
+            for (int i = 0; i < mResults.length(); i++) {
+                JSONObject c = mResults.getJSONObject(i);
+
+                //gets the content of each tag
+                String id = c.getString(TAG_ID);
+                String name = c.getString(TAG_NAME);
+                String street = c.getString(TAG_STREET);
+                String suburb = c.getString(TAG_SUBURB);
+                String latitude = c.getString(TAG_LAT);
+                String longitude = c.getString(TAG_LONG);
+                String distance = c.getString(TAG_DISTANCE);
+
+
+//                Location parkLocation = new Location(name);
+//                parkLocation.setLatitude(Double.parseDouble(latitude));
+//                parkLocation.setLongitude(Double.parseDouble(longitude));
+//
+//                float floatDistance = mLastLocation.distanceTo(parkLocation) / 1000;
+//                String distance = String.valueOf(floatDistance);
+
+
+
+                // creating new HashMap
+                HashMap<String, String> map = new HashMap<String, String>();
+
+                map.put(TAG_ID, id);
+                map.put(TAG_NAME, name);
+                map.put(TAG_STREET, street);
+                map.put(TAG_SUBURB, suburb);
+                map.put(TAG_LAT, latitude);
+                map.put(TAG_LONG, longitude);
+                map.put(TAG_DISTANCE, distance);
+
+                // adding HashList to ArrayList
+                mResultList.add(new ParkInfo(id, name, street, suburb, latitude, longitude, distance));
+
+                //annndddd, our JSON data is up to date same with our array list
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Inserts the parsed data into our listview
+     */
+    private void updateList() {
+
+//        For a ListActivity we need to set the List Adapter, and in order to do
+//        that, we need to create a ListAdapter.  This SimpleAdapter,
+//        will utilize our updated Hashmapped ArrayList,
+//        use our single_post xml template for each item in our list,
+//        and place the appropriate info from the list to the
+//        correct GUI id.  Order is important here.
+
+        mainAdapter = new ParkAdapter(mResultList);
+        mainRecyclerView.setAdapter(mainAdapter);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -316,37 +401,17 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         return super.onOptionsItemSelected(item);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onConnected(Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-//        if (mLastLocation != null) {
-//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-//        }
-
-        if (mRequestingLocationUpdates) {
-            startLocationUpdates();
+//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLastLocation = new Location("mLocation");
+        mLastLocation.setLatitude(Double.parseDouble("-27.3139480"));
+        mLastLocation.setLongitude(Double.parseDouble("153.0576320"));
+//        handleIntent(getIntent());
+        if (mLastLocation != null) {
+            handleIntent(getIntent());
         }
-    }
-
-    private void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (!mResolvingError) {
-            mGoogleApiClient.connect();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
     }
 
     @Override
@@ -360,13 +425,41 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateUI();
+    protected void onStart() {
+        super.onStart();
+        if (!mResolvingError) {  // more about this later
+            mGoogleApiClient.connect();
+        }
     }
 
-    private void updateUI() {
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 
+    private class LoadResults extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Loading Results...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            updateJSONData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            pDialog.dismiss();
+            updateList();
+        }
     }
 }

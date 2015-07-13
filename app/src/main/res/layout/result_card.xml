@@ -25,41 +25,53 @@
             android:layout_alignParentEnd="true">
 
             <TextView
-            android:id="@+id/txtName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:gravity="center_vertical"
-            android:textSize="24sp"
-            android:textColor="@color/primary_text"
-            android:paddingTop="24dp"
-                android:paddingLeft="16dp"
-                android:singleLine="false" />
+                android:id="@+id/txtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:gravity="center_vertical"
+                android:textSize="20sp"
+                android:textColor="@color/primary_text"
+                android:paddingTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:singleLine="false" />
 
             <TextView
-            android:id="@+id/txtStreet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Street"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:layout_below="@id/txtName"
-            android:paddingLeft="16dp"
-            android:textColor="@color/primary_text"
-            android:paddingTop="8dp"
+                android:id="@+id/txtStreet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Street"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:layout_below="@id/txtName"
+                android:paddingLeft="16dp"
+                android:textColor="@color/primary_text"
+                android:paddingTop="8dp"
+                    android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/txtSuburb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Suburb"
+                android:textSize="14sp"
+                android:layout_below="@+id/txtStreet"
+                android:paddingLeft="16dp"
+                android:textColor="@color/primary_text"
+                android:paddingTop="8dp"
                 android:singleLine="true" />
 
             <TextView
-            android:id="@+id/txtSuburb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Suburb"
-            android:textSize="14sp"
-            android:layout_below="@+id/txtStreet"
-            android:paddingLeft="16dp"
-            android:textColor="@color/primary_text"
-            android:paddingBottom="16dp"
-            android:paddingTop="8dp"
+                android:id="@+id/txtDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distance"
+                android:textSize="14sp"
+                android:layout_below="@+id/txtSuburb"
+                android:paddingLeft="16dp"
+                android:textColor="@color/primary_text"
+                android:paddingBottom="16dp"
+                android:paddingTop="8dp"
                 android:singleLine="true" />
 
         </RelativeLayout>
