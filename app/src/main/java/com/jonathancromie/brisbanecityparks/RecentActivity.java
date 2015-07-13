@@ -168,7 +168,6 @@ public class RecentActivity extends AppCompatActivity {
                         case 5:
                             i = new Intent(RecentActivity.this, SettingsActivity.class);
                             startActivity(i);
-                            finish();
                             break;
                         case 6:
 //                            i = new Intent(RecentActivity.this, HelpActivity.class);

@@ -183,7 +183,6 @@ public class ResultsActivity extends AppCompatActivity {
                         case 5:
                             i = new Intent(ResultsActivity.this, SettingsActivity.class);
                             startActivity(i);
-                            finish();
                             break;
                         case 6:
 //                            i = new Intent(MainActivity.this, HelpActivity.class);

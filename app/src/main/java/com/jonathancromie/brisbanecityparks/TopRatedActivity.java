@@ -168,7 +168,6 @@ public class TopRatedActivity extends AppCompatActivity {
                         case 5:
                             i = new Intent(TopRatedActivity.this, SettingsActivity.class);
                             startActivity(i);
-                            finish();
                             break;
                         case 6:
 //                            i = new Intent(TopRated.this, HelpActivity.class);

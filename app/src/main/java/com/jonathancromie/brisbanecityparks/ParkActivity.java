@@ -214,7 +214,6 @@ public class ParkActivity extends AppCompatActivity {
                         case 5:
                             i = new Intent(ParkActivity.this, SettingsActivity.class);
                             startActivity(i);
-                            finish();
                             break;
                         case 6:
 //                            i = new Intent(MainActivity.this, HelpActivity.class);
