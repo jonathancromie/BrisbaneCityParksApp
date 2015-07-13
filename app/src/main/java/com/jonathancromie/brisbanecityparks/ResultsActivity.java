@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -30,6 +31,10 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class ResultsActivity extends AppCompatActivity {
+public class ResultsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
@@ -89,6 +94,8 @@ public class ResultsActivity extends AppCompatActivity {
     private static final String TAG_STREET = "street";
     private static final String TAG_LAT = "latitude";
     private static final String TAG_LONG = "longitude";
+    private static final String TAG_DISTANCE = "distance";
+
     //it's important to note that the message is both in the parent branch of
     //our JSON tree that displays a "Post Available" or a "No Post Available" message,
     //and there is also a message for each individual post, listed under the "posts"
@@ -99,6 +106,10 @@ public class ResultsActivity extends AppCompatActivity {
     //manages all of our comments in a list.
 //    private ArrayList<HashMap<String, String>> mResultList;
     private ArrayList<ParkInfo> mResultList;
+
+    private Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mResolvingError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +243,13 @@ public class ResultsActivity extends AppCompatActivity {
         }; // Drawer Toggle Object Made
         drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
+
+        // Create a GoogleApiClient instance
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -292,6 +310,7 @@ public class ResultsActivity extends AppCompatActivity {
                 String suburb = c.getString(TAG_SUBURB);
                 String latitude = c.getString(TAG_LAT);
                 String longitude = c.getString(TAG_LONG);
+                String distance = c.getString(TAG_DISTANCE);
 
                 // creating new HashMap
                 HashMap<String, String> map = new HashMap<String, String>();
@@ -304,7 +323,7 @@ public class ResultsActivity extends AppCompatActivity {
                 map.put(TAG_LONG, longitude);
 
                 // adding HashList to ArrayList
-//                mResultList.add(new ParkInfo(id, name, street, suburb, latitude, longitude));
+                mResultList.add(new ParkInfo(id, name, street, suburb, latitude, longitude, distance));
 
                 //annndddd, our JSON data is up to date same with our array list
             }
@@ -350,6 +369,42 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        //        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLastLocation = new Location("mLocation");
+        mLastLocation.setLatitude(Double.parseDouble("-27.3139480"));
+        mLastLocation.setLongitude(Double.parseDouble("153.0576320"));
+//        handleIntent(getIntent());
+        if (mLastLocation != null) {
+            handleIntent(getIntent());
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!mResolvingError) {  // more about this later
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     private class LoadResults extends AsyncTask<Void, Void, Boolean> {
