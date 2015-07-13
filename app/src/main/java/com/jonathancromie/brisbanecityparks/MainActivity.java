@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,27 +29,42 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
-
-// closest parks maybe..
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
     private Toolbar toolbar;
 
-    RecyclerView mainRecyclerView;
-    ReviewAdapter mainAdapter;
-    RecyclerView.LayoutManager mainLayoutManager;
+//    RecyclerView mainRecyclerView;
+//    ReviewAdapter mainAdapter;
+//    RecyclerView.LayoutManager mainLayoutManager;
+
+    TextView mLatitudeText;
+    TextView mLongitudeText;
+    TextView mLastUpdateTimeText;
 
     RecyclerView drawerRecyclerView;
     RecyclerView.Adapter drawerAdapter;
@@ -64,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     //php login script location:
 
     //testing on Emulator:
-    private static final String RECENT_REVIEWS_URL = "http://10.0.2.2:80/webservice/recent.php";
+//    private static final String RECENT_REVIEWS_URL = "http://10.0.2.2:80/webservice/recent.php";
 
     //testing from a real server:
     //private static final String RECENT_REVIEWS_URL = "http://www.mybringback.com/webservice/comments.php";
@@ -86,6 +102,16 @@ public class MainActivity extends AppCompatActivity {
     private JSONArray mReviews = null;
     //manages all of our comments in a list.
     private ArrayList<ReviewInfo> mReviewList;
+
+
+
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private boolean mResolvingError = false;
+    private boolean mRequestingLocationUpdates = true;
+    private LocationRequest mLocationRequest;
+    private Location mCurrentLocation;
+    private String mLastUpdateTime;
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
@@ -109,13 +135,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        handleIntent(getIntent());
-
-        mainRecyclerView = (RecyclerView) findViewById(R.id.cardList);
-        mainRecyclerView.setHasFixedSize(true);
-        mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-        mainLayoutManager = new LinearLayoutManager(this);
-        mainRecyclerView.setLayoutManager(mainLayoutManager);
+//        mainRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+//        mainRecyclerView.setHasFixedSize(true);
+//        mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+//        mainLayoutManager = new LinearLayoutManager(this);
+//        mainRecyclerView.setLayoutManager(mainLayoutManager);
 
 
         drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
@@ -199,13 +223,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         drawerLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
-
         drawerRecyclerView.setLayoutManager(drawerLayoutManager);                 // Setting the layout Manager
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
-
         mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
@@ -225,16 +245,31 @@ public class MainActivity extends AppCompatActivity {
         }; // Drawer Toggle Object Made
         drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
+
+        mLatitudeText = (TextView) findViewById(R.id.mLatitudeText);
+        mLongitudeText = (TextView) findViewById(R.id.mLongitudeText);
+        mLastUpdateTimeText = (TextView) findViewById(R.id.mLastUpdateTimeText);
+
+        buildGoogleApiClient();
+
+
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void handleIntent(Intent intent) {
-        new LoadRecent().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        createLocationRequest();
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -291,92 +326,59 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LoadRecent extends AsyncTask<Void, Void, Boolean>  {
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+//        if (mLastLocation != null) {
+//            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
+//            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
+//        }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Loading Reviews...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            updateJSONData();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            pDialog.dismiss();
-            updateList();
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
         }
     }
 
-    private void updateJSONData() {
-        // Instantiate the arraylist to contain all the JSON data.
-        // we are going to use a bunch of key-value pairs, referring
-        // to the json element name, and the content, for example,
-        // message it the tag, and "I'm awesome" as the content..
+    private void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
 
-        mReviewList = new ArrayList<ReviewInfo>();
-
-        // Bro, it's time to power up the J parser
-        JSONParser jParser = new JSONParser();
-        // Feed the beast our comments url, and it spits us
-        //back a JSON object.  Boo-yeah Jerome.
-        JSONObject json = jParser.getJSONFromUrl(RECENT_REVIEWS_URL);
-
-        //when parsing JSON stuff, we should probably
-        //try to catch any exceptions:
-        try {
-
-            //I know I said we would check if "Posts were Avail." (success==1)
-            //before we tried to read the individual posts, but I lied...
-            //mComments will tell us how many "posts" or comments are
-            //available
-            mReviews = json.getJSONArray(TAG_REVIEWS);
-
-            // looping through all posts according to the json object returned
-            for (int i = 0; i < mReviews.length(); i++) {
-                JSONObject c = mReviews.getJSONObject(i);
-
-                //gets the content of each tag
-                String id = c.getString(TAG_ID);
-                String email = c.getString(TAG_EMAIL);
-                String review = c.getString(TAG_REVIEW);
-                String rating = c.getString(TAG_RATING);
-                String date = c.getString(TAG_DATE);
-
-                // creating new HashMap
-                HashMap<String, String> map = new HashMap<String, String>();
-
-                map.put(TAG_ID, id);
-                map.put(TAG_EMAIL, email);
-                map.put(TAG_REVIEW, review);
-                map.put(TAG_RATING, rating);
-                map.put(TAG_DATE, date);
-
-                // adding HashList to ArrayList
-                mReviewList.add(new ReviewInfo(id, email, review, rating, date));
-
-                //annndddd, our JSON data is up to date same with our array list
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!mResolvingError) {
+            mGoogleApiClient.connect();
         }
     }
 
-    /**
-     * Inserts the parsed data into our listview
-     */
-    private void updateList() {
-        mainAdapter = new ReviewAdapter(mReviewList);
-        mainRecyclerView.setAdapter(mainAdapter);
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        updateUI();
+    }
+
+    private void updateUI() {
+        mLatitudeText.setText(String.valueOf(mCurrentLocation.getLatitude()));
+        mLongitudeText.setText(String.valueOf(mCurrentLocation.getLongitude()));
+        mLastUpdateTimeText.setText(mLastUpdateTime);
     }
 }

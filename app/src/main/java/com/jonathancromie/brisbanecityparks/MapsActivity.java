@@ -16,6 +16,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     String latitude;
     String longitude;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent i = getIntent();
         latitude = i.getStringExtra("latitude");
         longitude = i.getStringExtra("longitude");
+        name = i.getStringExtra("parkName");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -40,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng marker = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
         map.addMarker(new MarkerOptions().position(marker).
-                                        title("Park Name").
+                                        title(name).
                                         icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         map.moveCamera(CameraUpdateFactory.newLatLng(marker));
     }
