@@ -37,8 +37,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// maybe recent comments for all parks?
-
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
@@ -92,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // favourites?
         mNavItems.add(new NavItem("Home", "Homepage", R.drawable.ic_home_grey_24dp));
         mNavItems.add(new NavItem("Top Rated", "Find awesome parks", R.drawable.ic_grade_grey_24dp));
         mNavItems.add(new NavItem("Trending", "Which parks are popular right now", R.drawable.ic_trending_up_grey_24dp));

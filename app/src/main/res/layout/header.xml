@@ -13,8 +13,8 @@
 
     <ImageView
     android:id="@+id/profile"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
     android:src="@drawable/ic_account_circle_grey_24dp"
     android:layout_marginTop="15dp" />
 
@@ -42,7 +42,7 @@
     android:layout_gravity="bottom"
     android:layout_marginTop="4dp"
     android:text="View Profile"
-    android:textColor="@color/accent"
+    android:textColor="@color/primary_text"
     android:textSize="12sp" />
     </LinearLayout>
 
