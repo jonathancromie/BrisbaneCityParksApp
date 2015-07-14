@@ -10,7 +10,7 @@
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
     -->
-    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -21,7 +21,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +37,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
-
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -86,6 +84,10 @@
         <activity
             android:name=".RecentActivity"
             android:label="@string/title_activity_recent" >
+        </activity>
+        <activity
+            android:name="._BaseActivity"
+            android:label="@string/title_activity___base" >
         </activity>
     </application>
 

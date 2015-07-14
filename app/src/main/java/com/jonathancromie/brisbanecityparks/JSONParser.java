@@ -32,7 +32,7 @@ public class JSONParser {
 
     }
 
-    public JSONObject getJSONFromUrl(final String url) {
+    public JSONObject getJSONFromUrl(final String url) { // final string
 
         // Making HTTP request
         try {

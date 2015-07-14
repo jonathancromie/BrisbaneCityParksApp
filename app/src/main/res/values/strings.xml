@@ -36,4 +36,5 @@
     <string name="title_activity_trending">TrendingActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_recent">RecentActivity</string>
+    <string name="title_activity___base">_BaseActivity</string>
 </resources>
