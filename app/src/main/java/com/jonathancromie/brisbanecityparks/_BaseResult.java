@@ -40,7 +40,7 @@ import java.util.HashMap;
 /**
  * Created by jonathancromie on 14/07/15.
  */
-public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class _BaseResult extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";
@@ -83,7 +83,7 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
+        setContentView(R.layout.activity_base_result);
 
         mNavItems.add(new NavItem("Reviews", R.drawable.ic_rate_review_blue_24dp));
         mNavItems.add(new NavItem("Favourites", R.drawable.ic_favorite_pink_24dp));
@@ -94,9 +94,9 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
         mNavItems.add(new NavItem("Settings", R.drawable.ic_settings_grey_24dp));
         mNavItems.add(new NavItem("Help & Feedback", R.drawable.ic_help_grey_24dp));
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_BaseActivity.this);
-        String user = sp.getString("email", "emailAddress");
-        String desc = "Visit Profile";
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_BaseResult.this);
+        String user = sp.getString("user", "user");
+        String email = sp.getString("email", "emailAddress");
         int profile = 0;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -113,10 +113,10 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
         drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
         drawerRecyclerView.setHasFixedSize(true);
         drawerRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
-        drawerAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
+        drawerAdapter = new DrawerListAdapter(mNavItems, user, email, profile, this);
         drawerRecyclerView.setAdapter(drawerAdapter);
 
-        final GestureDetector mGestureDetector = new GestureDetector(_BaseActivity.this, new GestureDetector.SimpleOnGestureListener() {
+        final GestureDetector mGestureDetector = new GestureDetector(_BaseResult.this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
@@ -131,34 +131,34 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
 
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                     drawer.closeDrawers();
-//                    Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(_BaseResult.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
                     switch (recyclerView.getChildLayoutPosition(child)) {
                         case 0:
-//                            switchActivities(_BaseActivity.this, ProfileActivity.class);
+//                            switchActivities(_BaseResult.this, ProfileActivity.class);
                             break;
                         case 1:
-//                            iswitchActivities(_BaseActivity.this, MyReviews.class);
+                            switchActivities(_BaseResult.this, MyReviews.class);
                             break;
                         case 2:
-//                            switchActivities(_BaseActivity.this, MyFavourites.class);
+//                            switchActivities(_BaseResult.this, MyFavourites.class);
                             break;
                         case 3:
-                            switchActivities(_BaseActivity.this, MainActivity.class);
+                            switchActivities(_BaseResult.this, MainActivity.class);
                             break;
                         case 4:
-                            switchActivities(_BaseActivity.this, TopRatedActivity.class);
+                            switchActivities(_BaseResult.this, TopRatedActivity.class);
                             break;
                         case 5:
-                            switchActivities(_BaseActivity.this, TrendingActivity.class);
+                            switchActivities(_BaseResult.this, TrendingActivity.class);
                             break;
                         case 6:
-                            switchActivities(_BaseActivity.this, RecentActivity.class);
+                            switchActivities(_BaseResult.this, RecentActivity.class);
                             break;
                         case 7:
-                            switchActivities(_BaseActivity.this, SettingsActivity.class);
+//                            switchActivities(_BaseResult.this, SettingsActivity.class);
                             break;
                         case 8:
-//                            switchActivities(_BaseActivity.this, HelpActivity.class);
+//                            switchActivities(_BaseResult.this, HelpActivity.class);
                             break;
                         default:
                             break;
@@ -212,8 +212,13 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
     }
 
+//    protected void onResume() {
+//        super.onResume();
+//        handleIntent(getIntent());
+//    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void handleIntent(Intent intent) {
+    public void handleIntent(Intent intent) {
         new LoadResults().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -266,19 +271,19 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
 
         MenuItem searchItem = menu.findItem(R.id.search_menu);
         // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) _BaseActivity.this.getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) _BaseResult.this.getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = null;
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
         if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(_BaseActivity.this.getComponentName()));
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(_BaseResult.this.getComponentName()));
         }
 
         final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Intent i = new Intent(_BaseActivity.this, ResultsActivity.class);
+                Intent i = new Intent(_BaseResult.this, ResultsActivity.class);
                 i.putExtra("query", query);
                 startActivity(i);
                 return true;
@@ -378,7 +383,7 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
     /**
      * Inserts the parsed data into our listview
      */
-    private void updateList() {
+    protected void updateList() {
 
 //        For a ListActivity we need to set the List Adapter, and in order to do
 //        that, we need to create a ListAdapter.  This SimpleAdapter,
@@ -390,6 +395,14 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
         mainAdapter = new ParkAdapter(mResultList);
         mainRecyclerView.setAdapter(mainAdapter);
     }
+
+//    public RecyclerView.Adapter getMainAdapter() {
+//        return mainAdapter;
+//    }
+//
+//    public RecyclerView getMainRecyclerView() {
+//        return mainRecyclerView;
+//    }
 
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
@@ -406,7 +419,7 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(_BaseActivity.this);
+            pDialog = new ProgressDialog(_BaseResult.this);
             pDialog.setMessage("Loading Results...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
@@ -416,9 +429,7 @@ public class _BaseActivity extends AppCompatActivity implements GoogleApiClient.
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            updateJSONData(getUrl()); //change
-
-
+            updateJSONData(getUrl());
             return null;
         }
 

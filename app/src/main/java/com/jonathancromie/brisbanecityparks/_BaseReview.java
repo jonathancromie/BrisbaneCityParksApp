@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class ParkActivity extends AppCompatActivity {
+public class _BaseReview extends AppCompatActivity {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
@@ -125,7 +125,7 @@ public class ParkActivity extends AppCompatActivity {
         mNavItems.add(new NavItem("Settings", R.drawable.ic_settings_grey_24dp));
         mNavItems.add(new NavItem("Help & Feedback", R.drawable.ic_help_grey_24dp));
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ParkActivity.this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_BaseReview.this);
         String user = sp.getString("email", "emailAddress");
         String desc = "Visit Profile";
         int profile = 0;
@@ -155,7 +155,7 @@ public class ParkActivity extends AppCompatActivity {
         drawerAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
         drawerRecyclerView.setAdapter(drawerAdapter);
 
-        final GestureDetector mGestureDetector = new GestureDetector(ParkActivity.this, new GestureDetector.SimpleOnGestureListener() {
+        final GestureDetector mGestureDetector = new GestureDetector(_BaseReview.this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
@@ -179,31 +179,31 @@ public class ParkActivity extends AppCompatActivity {
 //                            i = new Intent(MainActivity.this, ProfileActivity.class);
                             break;
                         case 1:
-                            i = new Intent(ParkActivity.this, MainActivity.class);
+                            i = new Intent(_BaseReview.this, MainActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 2:
-                            i = new Intent(ParkActivity.this, TopRatedActivity.class);
+                            i = new Intent(_BaseReview.this, TopRatedActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 3:
-                            i = new Intent(ParkActivity.this, TrendingActivity.class);
+                            i = new Intent(_BaseReview.this, TrendingActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 4:
-                            i = new Intent(ParkActivity.this, RecentActivity.class);
+                            i = new Intent(_BaseReview.this, RecentActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 5:
-                            i = new Intent(ParkActivity.this, SettingsActivity.class);
+                            i = new Intent(_BaseReview.this, SettingsActivity.class);
                             startActivity(i);
                             break;
                         case 6:
@@ -399,7 +399,7 @@ public class ParkActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(ParkActivity.this);
+            pDialog = new ProgressDialog(_BaseReview.this);
             pDialog.setMessage("Loading Reviews...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
@@ -425,7 +425,7 @@ public class ParkActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(ParkActivity.this);
+            pDialog = new ProgressDialog(_BaseReview.this);
             pDialog.setMessage("Posting Review...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
@@ -438,7 +438,7 @@ public class ParkActivity extends AppCompatActivity {
             // Check for success tag
             int success;
 
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ParkActivity.this);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(_BaseReview.this);
             String email = sp.getString("email", "anon");
 
             try {
@@ -485,7 +485,7 @@ public class ParkActivity extends AppCompatActivity {
             // dismiss the dialog once product deleted
             pDialog.dismiss();
             if (file_url != null){
-                Toast.makeText(ParkActivity.this, file_url, Toast.LENGTH_LONG).show();
+                Toast.makeText(_BaseReview.this, file_url, Toast.LENGTH_LONG).show();
             }
         }
     }

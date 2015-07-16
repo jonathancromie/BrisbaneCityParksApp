@@ -9,8 +9,10 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -172,8 +174,9 @@ public class RegisterActivity extends Activity implements OnClickListener {
                 success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                     Log.d("User Created!", json.toString());
-                    finish();
+
                     Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    finish();
                     startActivity(loginIntent);
                     return json.getString(TAG_MESSAGE);
                 }else{

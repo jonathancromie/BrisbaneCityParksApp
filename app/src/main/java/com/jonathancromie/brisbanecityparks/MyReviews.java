@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class ParkActivity extends AppCompatActivity {
+public class MyReviews extends AppCompatActivity {
 
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
@@ -60,7 +60,7 @@ public class ParkActivity extends AppCompatActivity {
     // Progress Dialog
     private ProgressDialog pDialog;
 
-    String parkID;
+    String email;
 
     String reviewText;
     String ratingText;
@@ -69,23 +69,11 @@ public class ParkActivity extends AppCompatActivity {
 
     //php read comments script
 
-    //localhost :
-    //testing on your device
-    //put your local ip instead,  on windows, run CMD > ipconfig
-    //or in mac's terminal type ifconfig and look for the ip under en0 or en1
-    // private static final String READ_COMMENTS_URL = "http://xxx.xxx.x.x:1234/webservice/comments.php";
-
     //testing on Emulator:
-//    private static final String READ_REVIEWS_URL = "http://10.0.2.2:80/webservice/reviews.php?id=";
+//    private static final String MY_REVIEWS_URL = "http://10.0.2.2:80/webservice/myreviews.php?email=";
 
     //testing from a real server:
-    private static final String READ_REVIEWS_URL = "http://60.240.144.91:80/webservice/reviews.php?id=";
-
-    //testing on Emulator:
-//    private static final String POST_REVIEW_URL = "http://10.0.2.2:80/webservice/addreview.php";
-
-    //testing from a real server:
-    private static final String POST_REVIEW_URL = "http://60.240.144.91:80/webservice/addreview.php";
+    private static final String MY_REVIEWS_URL = "http://60.240.144.91:80/webservice/myreviews.php?email=";
 
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";
@@ -114,7 +102,8 @@ public class ParkActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_park);
+        setContentView(R.layout.activity_my_reviews);
+
 
         mNavItems.add(new NavItem("Reviews", R.drawable.ic_rate_review_blue_24dp));
         mNavItems.add(new NavItem("Favourites", R.drawable.ic_favorite_pink_24dp));
@@ -125,13 +114,13 @@ public class ParkActivity extends AppCompatActivity {
         mNavItems.add(new NavItem("Settings", R.drawable.ic_settings_grey_24dp));
         mNavItems.add(new NavItem("Help & Feedback", R.drawable.ic_help_grey_24dp));
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ParkActivity.this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyReviews.this);
         String user = sp.getString("email", "emailAddress");
         String desc = "Visit Profile";
         int profile = 0;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Park");
+        toolbar.setTitle("My Reviews");
         setSupportActionBar(toolbar);
 
         handleIntent(getIntent());
@@ -155,7 +144,7 @@ public class ParkActivity extends AppCompatActivity {
         drawerAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
         drawerRecyclerView.setAdapter(drawerAdapter);
 
-        final GestureDetector mGestureDetector = new GestureDetector(ParkActivity.this, new GestureDetector.SimpleOnGestureListener() {
+        final GestureDetector mGestureDetector = new GestureDetector(MyReviews.this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
@@ -179,35 +168,35 @@ public class ParkActivity extends AppCompatActivity {
 //                            i = new Intent(MainActivity.this, ProfileActivity.class);
                             break;
                         case 1:
-                            i = new Intent(ParkActivity.this, MainActivity.class);
+                            i = new Intent(MyReviews.this, MainActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 2:
-                            i = new Intent(ParkActivity.this, TopRatedActivity.class);
+                            i = new Intent(MyReviews.this, TopRatedActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 3:
-                            i = new Intent(ParkActivity.this, TrendingActivity.class);
+                            i = new Intent(MyReviews.this, TrendingActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 4:
-                            i = new Intent(ParkActivity.this, RecentActivity.class);
+                            i = new Intent(MyReviews.this, RecentActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finish();
                             break;
                         case 5:
-                            i = new Intent(ParkActivity.this, SettingsActivity.class);
+                            i = new Intent(MyReviews.this, SettingsActivity.class);
                             startActivity(i);
                             break;
                         case 6:
-//                            i = new Intent(MainActivity.this, HelpActivity.class);
+//                            i = new Intent(MyReviews.this, HelpActivity.class);
 //                            startActivity(i);
                             break;
                         default:
@@ -261,48 +250,16 @@ public class ParkActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void handleIntent(Intent intent) {
-        parkID = intent.getStringExtra("parkID");
+//        intent = getIntent();
+//        email = intent.getStringExtra("emailAddress");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MyReviews.this);
+        email = sp.getString("email", "anon");
         new LoadReviews().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
-    }
-
-    public void showDialog(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        final View view = inflater.inflate(R.layout.dialog_add_review, null);
-        builder.setView(view);
-
-        final EditText review = (EditText) view.findViewById(R.id.editReview);
-        final EditText rating = (EditText) view.findViewById(R.id.editRating);
-
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // add review
-                reviewText = review.getText().toString();
-                ratingText = rating.getText().toString();
-
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                date_posted = sdf.format(new Date());
-
-                new AddReview().execute();
-            }
-        })
-
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        builder.create();
-        builder.show();
     }
 
     /**
@@ -320,7 +277,7 @@ public class ParkActivity extends AppCompatActivity {
         JSONParser jParser = new JSONParser();
         // Feed the beast our comments url, and it spits us
         //back a JSON object.  Boo-yeah Jerome.
-        JSONObject json = jParser.getJSONFromUrl(READ_REVIEWS_URL+query);
+        JSONObject json = jParser.getJSONFromUrl(MY_REVIEWS_URL+query);
 
         //when parsing JSON stuff, we should probably
         //try to catch any exceptions:
@@ -399,7 +356,7 @@ public class ParkActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(ParkActivity.this);
+            pDialog = new ProgressDialog(MyReviews.this);
             pDialog.setMessage("Loading Reviews...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
@@ -408,7 +365,7 @@ public class ParkActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... arg0) {
-            updateJSONdata(parkID);
+            updateJSONdata(email);
             return null;
         }
 
@@ -417,76 +374,6 @@ public class ParkActivity extends AppCompatActivity {
             super.onPostExecute(result);
             pDialog.dismiss();
             updateList();
-        }
-    }
-
-    private class AddReview extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(ParkActivity.this);
-            pDialog.setMessage("Posting Review...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected String doInBackground(String... args) {
-            // Check for success tag
-            int success;
-
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ParkActivity.this);
-            String email = sp.getString("email", "anon");
-
-            try {
-                // Building Parameters
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("park_id", parkID));
-                params.add(new BasicNameValuePair("email", email));
-                params.add(new BasicNameValuePair("review", reviewText));
-                params.add(new BasicNameValuePair("rating", ratingText));
-                params.add(new BasicNameValuePair("date_posted", date_posted));
-
-                Log.d("request!", "starting");
-
-                // JSON parser class
-                JSONParser jsonParser = new JSONParser();
-
-                //Posting user data to script
-                JSONObject json = jsonParser.makeHttpRequest(
-                        POST_REVIEW_URL, "POST", params);
-
-                // full json response
-                Log.d("Post Review attempt", json.toString());
-
-                // json success element
-                success = json.getInt(TAG_SUCCESS);
-                if (success == 1) {
-                    Log.d("Review Added!", json.toString());
-                    finish();
-                    return json.getString(TAG_MESSAGE);
-                }else{
-                    Log.d("Review Failure!", json.getString(TAG_MESSAGE));
-                    return json.getString(TAG_MESSAGE);
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog once product deleted
-            pDialog.dismiss();
-            if (file_url != null){
-                Toast.makeText(ParkActivity.this, file_url, Toast.LENGTH_LONG).show();
-            }
         }
     }
 

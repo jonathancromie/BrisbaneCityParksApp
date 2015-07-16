@@ -37,4 +37,6 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_recent">RecentActivity</string>
     <string name="title_activity___base">_BaseActivity</string>
+    <string name="title_activity_my_reviews">MyReviews</string>
+    <string name="title_activity___base_review">_BaseReview</string>
 </resources>
