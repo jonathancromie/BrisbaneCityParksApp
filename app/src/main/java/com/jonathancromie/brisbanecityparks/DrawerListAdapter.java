@@ -1,6 +1,8 @@
 package com.jonathancromie.brisbanecityparks;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +26,13 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
     private ArrayList<NavItem> mNavItems;
 
     private String name;
-    private String email;
+    private static String email;
     private int profile;
     Context context;
+
+    public static String getEmail() {
+        return email;
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         int holderID;
@@ -64,9 +70,50 @@ public class DrawerListAdapter extends RecyclerView.Adapter<DrawerListAdapter.Vi
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(contxt, "The item clicked is " + getPosition(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(contxt, "The item clicked is " + getLayoutPosition(), Toast.LENGTH_SHORT).show();
+
+            switch (getLayoutPosition()) {
+                        case 0:
+//                            switchActivity(view.getContext(), ProfileActivity.class);
+                            break;
+                        case 1:
+                            switchActivity(view.getContext(), MyReviews.class, null);
+                            break;
+                        case 2:
+                            switchActivity(view.getContext(), MyFavourites.class, getEmail());
+                            break;
+                        case 3:
+                            switchActivity(view.getContext(), MainActivity.class, null);
+                            break;
+                        case 4:
+                            switchActivity(view.getContext(), TopRatedActivity.class, null);
+                            break;
+                        case 5:
+                            switchActivity(view.getContext(), TrendingActivity.class, null);
+                            break;
+                        case 6:
+                            switchActivity(view.getContext(), RecentActivity.class, null);
+                            break;
+                        case 7:
+//                            switchActivity(view.getContext(), SettingsActivity.class);
+                            break;
+                        case 8:
+//                            switchActivity(view.getContext(), HelpActivity.class);
+                            break;
+                        default:
+                            break;
+            }
+        }
+        private void switchActivity(Context from, Class to, String extra) {
+            Intent intent = new Intent(from, to);
+            intent.putExtra("extra", extra);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            from.startActivity(intent);
+            ((Activity)from).finish();
         }
     }
+
+
 
     public DrawerListAdapter(ArrayList<NavItem> navItems, String name, String email, int profile, Context passedContext) {
         mNavItems = navItems;

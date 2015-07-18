@@ -70,10 +70,10 @@ public class MyReviews extends AppCompatActivity {
     //php read comments script
 
     //testing on Emulator:
-//    private static final String MY_REVIEWS_URL = "http://10.0.2.2:80/webservice/myreviews.php?email=";
+    private static final String MY_REVIEWS_URL = "http://10.0.2.2:80/webservice/myreviews.php?email=";
 
     //testing from a real server:
-    private static final String MY_REVIEWS_URL = "http://60.240.144.91:80/webservice/myreviews.php?email=";
+//    private static final String MY_REVIEWS_URL = "http://60.240.144.91:80/webservice/myreviews.php?email=";
 
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";

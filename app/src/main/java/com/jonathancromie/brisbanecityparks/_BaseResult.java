@@ -116,71 +116,6 @@ public class _BaseResult extends AppCompatActivity implements GoogleApiClient.Co
         drawerAdapter = new DrawerListAdapter(mNavItems, user, email, profile, this);
         drawerRecyclerView.setAdapter(drawerAdapter);
 
-        final GestureDetector mGestureDetector = new GestureDetector(_BaseResult.this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
-
-        });
-
-        drawerRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-
-                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                    drawer.closeDrawers();
-//                    Toast.makeText(_BaseResult.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
-                    switch (recyclerView.getChildLayoutPosition(child)) {
-                        case 0:
-//                            switchActivities(_BaseResult.this, ProfileActivity.class);
-                            break;
-                        case 1:
-                            switchActivities(_BaseResult.this, MyReviews.class);
-                            break;
-                        case 2:
-//                            switchActivities(_BaseResult.this, MyFavourites.class);
-                            break;
-                        case 3:
-                            switchActivities(_BaseResult.this, MainActivity.class);
-                            break;
-                        case 4:
-                            switchActivities(_BaseResult.this, TopRatedActivity.class);
-                            break;
-                        case 5:
-                            switchActivities(_BaseResult.this, TrendingActivity.class);
-                            break;
-                        case 6:
-                            switchActivities(_BaseResult.this, RecentActivity.class);
-                            break;
-                        case 7:
-//                            switchActivities(_BaseResult.this, SettingsActivity.class);
-                            break;
-                        case 8:
-//                            switchActivities(_BaseResult.this, HelpActivity.class);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    return true;
-                }
-
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
         drawerLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
         drawerRecyclerView.setLayoutManager(drawerLayoutManager);                 // Setting the layout Manager
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);        // Drawer object Assigned to the view
@@ -212,10 +147,10 @@ public class _BaseResult extends AppCompatActivity implements GoogleApiClient.Co
                 .build();
     }
 
-//    protected void onResume() {
-//        super.onResume();
-//        handleIntent(getIntent());
-//    }
+    protected void onResume() {
+        super.onResume();
+        handleIntent(getIntent());
+    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void handleIntent(Intent intent) {
@@ -406,13 +341,6 @@ public class _BaseResult extends AppCompatActivity implements GoogleApiClient.Co
 
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
-    }
-
-    private void switchActivities(Context from, Class to) {
-        Intent intent = new Intent(from, to);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 
     private class LoadResults extends AsyncTask<Void, Void, Boolean> {

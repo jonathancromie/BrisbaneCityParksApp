@@ -61,7 +61,7 @@ public class ParkActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     String parkID;
-
+    String parkName;
     String reviewText;
     String ratingText;
 
@@ -76,16 +76,16 @@ public class ParkActivity extends AppCompatActivity {
     // private static final String READ_COMMENTS_URL = "http://xxx.xxx.x.x:1234/webservice/comments.php";
 
     //testing on Emulator:
-//    private static final String READ_REVIEWS_URL = "http://10.0.2.2:80/webservice/reviews.php?id=";
+    private static final String READ_REVIEWS_URL = "http://10.0.2.2:80/webservice/reviews.php?id=";
 
     //testing from a real server:
-    private static final String READ_REVIEWS_URL = "http://60.240.144.91:80/webservice/reviews.php?id=";
+//    private static final String READ_REVIEWS_URL = "http://60.240.144.91:80/webservice/reviews.php?id=";
 
     //testing on Emulator:
-//    private static final String POST_REVIEW_URL = "http://10.0.2.2:80/webservice/addreview.php";
+    private static final String POST_REVIEW_URL = "http://10.0.2.2:80/webservice/addreview.php";
 
     //testing from a real server:
-    private static final String POST_REVIEW_URL = "http://60.240.144.91:80/webservice/addreview.php";
+//    private static final String POST_REVIEW_URL = "http://60.240.144.91:80/webservice/addreview.php";
 
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";
@@ -130,8 +130,10 @@ public class ParkActivity extends AppCompatActivity {
         String desc = "Visit Profile";
         int profile = 0;
 
+        parkName = getIntent().getStringExtra("parkName");
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Park");
+        toolbar.setTitle(parkName);
         setSupportActionBar(toolbar);
 
         handleIntent(getIntent());
