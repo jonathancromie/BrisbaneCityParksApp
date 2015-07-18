@@ -99,6 +99,10 @@
             android:name="._BaseReview"
             android:label="@string/title_activity___base_review" >
         </activity>
+        <activity
+            android:name=".MyFavourites"
+            android:label="@string/title_activity_my_favourites" >
+        </activity>
     </application>
 
 </manifest>

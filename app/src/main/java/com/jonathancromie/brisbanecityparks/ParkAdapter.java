@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -72,6 +73,9 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
                     break;
 
                 case R.id.favourite:
+                    Toast.makeText(v.getContext(), parkName + " added to favourites", Toast.LENGTH_SHORT);
+                    Intent favIntent = new Intent(v.getContext(), MyFavourites.class);
+                    v.getContext().startActivity(favIntent);
                     break;
 
             }
