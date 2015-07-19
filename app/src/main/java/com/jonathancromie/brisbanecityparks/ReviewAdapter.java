@@ -1,5 +1,6 @@
 package com.jonathancromie.brisbanecityparks;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.MapView;
 
 import org.w3c.dom.Text;
 
@@ -18,12 +21,10 @@ import java.util.ArrayList;
  */
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
-    public static class ReviewViewHolder extends RecyclerView.ViewHolder {
+    private static String latitude;
+    private static String longitude;
 
-//        CardView addReviewCard;
-//        TextView txtReview;
-//        TextView txtRating;
-//        Button buttonSubmit;
+    public static class ReviewViewHolder extends RecyclerView.ViewHolder {
 
         CardView reviewCard;
         TextView email;
@@ -36,12 +37,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
         public ReviewViewHolder(View itemView) {
             super(itemView);
-            // Add Review Card
-//            addReviewCard = (CardView) itemView.findViewById(R.id.add_review_card);
-//            addReviewCard.setBackgroundColor(itemView.getResources().getColor(R.color.primary_light));
-//            txtReview = (TextView) itemView.findViewById(R.id.txtReview);
-//            txtRating = (TextView) itemView.findViewById(R.id.txtRating);
-
 
             // List of Reviews
             reviewCard = (CardView) itemView.findViewById(R.id.review_card);
@@ -52,6 +47,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
             datePosted = (TextView) itemView.findViewById(R.id.date_posted);
         }
+
+//        @Override
+//        public void onClick(View v) {
+//            if (v.getId() == R.id.map) {
+//                Intent i = new Intent(v.getContext(), MapsActivity.class);
+//                i.putExtra("latitude", latitude);
+//                i.putExtra("longitude", longitude);
+//                v.getContext().startActivity(i);
+//            }
+//        }
     }
 
     private ArrayList<ReviewInfo> reviewList;

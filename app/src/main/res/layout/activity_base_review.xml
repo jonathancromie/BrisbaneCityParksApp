@@ -17,7 +17,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" >
+            layout="@layout/toolbar_results" >
         </include>
 
         <!-- A RecyclerView with some commonly used attributes -->

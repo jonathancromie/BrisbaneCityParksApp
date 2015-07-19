@@ -17,8 +17,18 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" >
+            layout="@layout/toolbar_parks">
         </include>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@+id/toolbar"
+            map:liteMode="true"
+            map:mapType="normal"
+            map:cameraZoom="15"/>
 
         <!-- A RecyclerView with some commonly used attributes -->
         <android.support.v7.widget.RecyclerView
@@ -31,7 +41,7 @@
             android:layout_height="match_parent"
             tools:context=".ParkActivity"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/toolbar" />
+            android:layout_below="@+id/map" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

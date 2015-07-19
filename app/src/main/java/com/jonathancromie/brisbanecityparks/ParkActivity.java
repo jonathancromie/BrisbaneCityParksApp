@@ -27,6 +27,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.MapView;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParkActivity extends AppCompatActivity {
 
@@ -110,11 +113,31 @@ public class ParkActivity extends AppCompatActivity {
 
 
 //    private Button btnMap;
+    MapView mapView;
+    String latitude;
+    String longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park);
+
+        mapView = (MapView) findViewById(R.id.map);
+        mapView.onCreate(null);
+        mapView.onResume();
+
+        latitude = getIntent().getStringExtra("latitude");
+        longitude = getIntent().getStringExtra("longitude");
+
+        mapView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ParkActivity.this, MapsActivity.class);
+                i.putExtra("latitude", latitude);
+                i.putExtra("longitude", longitude);
+                v.getContext().startActivity(i);
+            }
+        });
 
         mNavItems.add(new NavItem("Reviews", R.drawable.ic_rate_review_blue_24dp));
         mNavItems.add(new NavItem("Favourites", R.drawable.ic_favorite_pink_24dp));
