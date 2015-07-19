@@ -164,10 +164,11 @@ public class _BaseResult extends AppCompatActivity implements GoogleApiClient.Co
 
     @Override
     public void onConnected(Bundle bundle) {
-//        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         mLastLocation = new Location("mLocation");
         mLastLocation.setLatitude(Double.parseDouble("-27.3139480"));
         mLastLocation.setLongitude(Double.parseDouble("153.0576320"));
+
         if (mLastLocation != null) {
             handleIntent(getIntent());
         }

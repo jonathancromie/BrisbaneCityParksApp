@@ -10,11 +10,11 @@ public class MyFavourites extends _BaseResult {
     //or in mac's terminal type ifconfig and look for the ip under en0 or en1
 
     //testing on Emulator:
-    private static final String LOAD_FAVOURITES_URL = "http://10.0.2.2:80/webservice/loadfavourites.php?email=";
+//    private static final String LOAD_FAVOURITES_URL = "http://10.0.2.2:80/webservice/loadfavourites.php?email=";
 
 
     //testing from a real server:
-//    private static final String SEARCH_PARKS_URL = "http://60.240.144.91:80/webservice/myfavourites.php?email=";
+    private static final String LOAD_FAVOURITES_URL = "http://60.240.144.91:80/webservice/myfavourites.php?email=";
 
 
     @Override

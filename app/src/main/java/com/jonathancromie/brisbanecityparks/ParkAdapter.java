@@ -1,10 +1,12 @@
 package com.jonathancromie.brisbanecityparks;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -69,14 +71,19 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             share = (Button) itemView.findViewById(R.id.share);
             favourite = (ImageButton) itemView.findViewById(R.id.favourite);
 
-            resultCard.setOnClickListener(this);
+//            resultCard.setOnClickListener(this);
             explore.setOnClickListener(this);
+            share.setOnClickListener(this);
+            favourite.setOnClickListener(this);
         }
 
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         public void onClick(View v) {
 
-            switch (v.getId()) {
+            int id = v.getId();
+
+            switch (id) {
                 case R.id.explore:
                     Intent i = new Intent(v.getContext(), ParkActivity.class);
                     i.putExtra("parkID", parkID);
@@ -96,7 +103,6 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
                     break;
 
             }
-
         }
 
 
@@ -107,7 +113,7 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
             protected void onPreExecute() {
                 super.onPreExecute();
                 pDialog = new ProgressDialog(itemView.getContext());
-                pDialog.setMessage("Posting Review...");
+                pDialog.setMessage("Adding Favourite...");
                 pDialog.setIndeterminate(false);
                 pDialog.setCancelable(true);
                 pDialog.show();
@@ -138,16 +144,16 @@ public class ParkAdapter extends RecyclerView.Adapter<ParkAdapter.ParkViewHolder
                             ADD_FAVOURITES_URL, "POST", params);
 
                     // full json response
-                    Log.d("Post Review attempt", json.toString());
+                    Log.d("Add favourite attempt", json.toString());
 
                     // json success element
                     success = json.getInt(TAG_SUCCESS);
                     if (success == 1) {
-                        Log.d("Review Added!", json.toString());
+                        Log.d("Favourite Added!", json.toString());
                         ((Activity)itemView.getContext()).finish();
                         return json.getString(TAG_MESSAGE);
                     }else{
-                        Log.d("Review Failure!", json.getString(TAG_MESSAGE));
+                        Log.d("Favourite Failure!", json.getString(TAG_MESSAGE));
                         return json.getString(TAG_MESSAGE);
 
                     }
