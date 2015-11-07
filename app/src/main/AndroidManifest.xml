@@ -10,7 +10,7 @@
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
     -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
+    <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -21,6 +21,16 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
+<<<<<<< HEAD
+=======
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -30,12 +40,17 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+<<<<<<< HEAD
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+=======
+            android:label="@string/title_activity_login" >
+
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -87,6 +102,7 @@
             android:name=".RecentActivity"
             android:label="@string/title_activity_recent" >
         </activity>
+<<<<<<< HEAD
         <activity
             android:name="._BaseResult"
             android:label="@string/title_activity___base" >
@@ -103,6 +119,8 @@
             android:name=".MyFavourites"
             android:label="@string/title_activity_my_favourites" >
         </activity>
+=======
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
     </application>
 
 </manifest>

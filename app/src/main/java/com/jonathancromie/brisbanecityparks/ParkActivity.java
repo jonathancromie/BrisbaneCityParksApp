@@ -52,6 +52,19 @@ public class ParkActivity extends AppCompatActivity {
     ReviewAdapter mainAdapter;
     RecyclerView.LayoutManager mainLayoutManager;
 
+<<<<<<< HEAD
+=======
+public class ParkActivity extends AppCompatActivity {
+
+    private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
+
+    private Toolbar toolbar;
+
+    RecyclerView mainRecyclerView;
+    ReviewAdapter mainAdapter;
+    RecyclerView.LayoutManager mainLayoutManager;
+
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
     RecyclerView drawerRecyclerView;
     RecyclerView.Adapter drawerAdapter;
     RecyclerView.LayoutManager drawerLayoutManager;
@@ -64,7 +77,11 @@ public class ParkActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     String parkID;
+<<<<<<< HEAD
     String parkName;
+=======
+
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
     String reviewText;
     String ratingText;
 
@@ -79,18 +96,25 @@ public class ParkActivity extends AppCompatActivity {
     // private static final String READ_COMMENTS_URL = "http://xxx.xxx.x.x:1234/webservice/comments.php";
 
     //testing on Emulator:
-    private static final String READ_REVIEWS_URL = "http://10.0.2.2:80/webservice/reviews.php?id=";
+//    private static final String READ_REVIEWS_URL = "http://10.0.2.2:80/webservice/reviews.php?id=";
 
     //testing from a real server:
-//    private static final String READ_REVIEWS_URL = "http://60.240.144.91:80/webservice/reviews.php?id=";
+    //private static final String READ_COMMENTS_URL = "http://www.mybringback.com/webservice/comments.php";
+    private static final String READ_REVIEWS_URL = "http://60.240.144.91:80/webservice/reviews.php?id=";
 
     //testing on Emulator:
 //    private static final String POST_REVIEW_URL = "http://10.0.2.2:80/webservice/addreview.php";
+<<<<<<< HEAD
 
     private static final String POST_REVIEW_URL = "http://localhost/webservice/addreview.php";
 
     //testing from a real server:
 //    private static final String POST_REVIEW_URL = "http://60.240.144.91:80/webservice/addreview.php";
+=======
+
+    //testing from a real server:
+    private static final String POST_REVIEW_URL = "http://60.240.144.91:80/webservice/reviews.php?id=";
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
 
     //JSON IDS:
     private static final String TAG_SUCCESS = "success";
@@ -115,15 +139,19 @@ public class ParkActivity extends AppCompatActivity {
 
 
 //    private Button btnMap;
+<<<<<<< HEAD
     MapView mapView;
     String latitude;
     String longitude;
+=======
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park);
 
+<<<<<<< HEAD
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(null);
         mapView.onResume();
@@ -143,6 +171,8 @@ public class ParkActivity extends AppCompatActivity {
 
         mNavItems.add(new NavItem("Reviews", R.drawable.ic_rate_review_blue_24dp));
         mNavItems.add(new NavItem("Favourites", R.drawable.ic_favorite_pink_24dp));
+=======
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
         mNavItems.add(new NavItem("Local", R.drawable.ic_place_grey_24dp));
         mNavItems.add(new NavItem("Top Rated", R.drawable.ic_grade_grey_24dp));
         mNavItems.add(new NavItem("Trending", R.drawable.ic_trending_up_grey_24dp));
@@ -155,10 +185,15 @@ public class ParkActivity extends AppCompatActivity {
         String desc = "Visit Profile";
         int profile = 0;
 
+<<<<<<< HEAD
         parkName = getIntent().getStringExtra("parkName");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(parkName);
+=======
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Park");
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
         setSupportActionBar(toolbar);
 
         handleIntent(getIntent());
@@ -168,6 +203,7 @@ public class ParkActivity extends AppCompatActivity {
         mainRecyclerView.setHasFixedSize(true);
 
         mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+<<<<<<< HEAD
 
         mainLayoutManager = new LinearLayoutManager(this);
 
@@ -245,6 +281,85 @@ public class ParkActivity extends AppCompatActivity {
 
                 }
 
+=======
+
+        mainLayoutManager = new LinearLayoutManager(this);
+
+        mainRecyclerView.setLayoutManager(mainLayoutManager);
+
+//        btnMap = (Button) findViewById(R.id.btnMap);
+//        btnMap.setOnClickListener(this);
+
+
+        drawerRecyclerView = (RecyclerView) findViewById(R.id.left_drawer);
+        drawerRecyclerView.setHasFixedSize(true);
+        drawerAdapter = new DrawerListAdapter(mNavItems, user, desc, profile, this);
+        drawerRecyclerView.setAdapter(drawerAdapter);
+
+        final GestureDetector mGestureDetector = new GestureDetector(ParkActivity.this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+        });
+
+        drawerRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+
+                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                    drawer.closeDrawers();
+//                    Toast.makeText(ParkActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
+
+                    Intent i;
+                    switch (recyclerView.getChildLayoutPosition(child)) {
+                        case 0:
+//                            i = new Intent(MainActivity.this, ProfileActivity.class);
+                            break;
+                        case 1:
+                            i = new Intent(ParkActivity.this, MainActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
+                            break;
+                        case 2:
+                            i = new Intent(ParkActivity.this, TopRatedActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
+                            break;
+                        case 3:
+                            i = new Intent(ParkActivity.this, TrendingActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
+                            break;
+                        case 4:
+                            i = new Intent(ParkActivity.this, RecentActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
+                            break;
+                        case 5:
+                            i = new Intent(ParkActivity.this, SettingsActivity.class);
+                            startActivity(i);
+                            break;
+                        case 6:
+//                            i = new Intent(MainActivity.this, HelpActivity.class);
+//                            startActivity(i);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    return true;
+
+                }
+
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
                 return false;
             }
 
@@ -398,6 +513,7 @@ public class ParkActivity extends AppCompatActivity {
         mainAdapter = new ReviewAdapter(mReviewList);
         mainRecyclerView.setAdapter(mainAdapter);
     }
+<<<<<<< HEAD
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -407,6 +523,17 @@ public class ParkActivity extends AppCompatActivity {
     }
 
     @Override
+=======
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_park, menu);
+        return true;
+    }
+
+    @Override
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

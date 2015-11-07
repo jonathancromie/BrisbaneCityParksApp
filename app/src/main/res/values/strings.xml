@@ -36,8 +36,11 @@
     <string name="title_activity_trending">TrendingActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_recent">RecentActivity</string>
+<<<<<<< HEAD
     <string name="title_activity___base">_BaseActivity</string>
     <string name="title_activity_my_reviews">MyReviews</string>
     <string name="title_activity___base_review">_BaseReview</string>
     <string name="title_activity_my_favourites">MyFavourites</string>
+=======
+>>>>>>> parent of c8cb35b... Continued refactoring duplicated code to base class
 </resources>
